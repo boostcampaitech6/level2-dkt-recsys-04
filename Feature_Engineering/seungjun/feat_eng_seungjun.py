@@ -25,7 +25,7 @@ def correct_shift_past(df : pd.DataFrame, window = 2) -> pd.DataFrame:
     for i in range(1,window+1,1):
         df[f'correct_shift_{i}'] = df.groupby('userID')['answerCode'].shift(i)
 
-    #df.fillna(0,inplace=True) # 결측치 0으로 처리 # 어떤 값으로 처리할 지 생각
+    df.fillna(0,inplace=True) # 결측치 -1로 처리 # 0이나 1로 결측치를 처리할 수 없음
     return df
 
 def correct_shift_future(df : pd.DataFrame, window = 2) -> pd.DataFrame:
@@ -35,5 +35,5 @@ def correct_shift_future(df : pd.DataFrame, window = 2) -> pd.DataFrame:
     for i in range(1,window+1,1):
         df[f'correct_shift_-{i}'] = df.groupby('userID')['answerCode'].shift(i*(-1))
 
-    #df.fillna(0,inplace=True) # 결측치 0으로 처리 # 어떤 값으로 처리할 지 생각
+    df.fillna(0,inplace=True) # 결측치 -1으로 처리 # 0이나 1로 결측치를 처리할 수 없음
     return df
