@@ -31,4 +31,4 @@
 - 추가적인 진행을 위해 SVD를 진행하였으나, baseline을 통한 테스트 결과 acc, auc 모두 감소하는 것을 확인.
 - 추가적인 원인을 찾기 전에는 components=1인 pca를 사용할 것.
 7. total_input
-- svd를 사용한 결과를 포함하여 최종적으로 모델의 input에 넣기위한 feature를 반환
+- pca를 사용한 결과를 포함하여 최종적으로 모델의 input에 넣기위한 feature를 반환
