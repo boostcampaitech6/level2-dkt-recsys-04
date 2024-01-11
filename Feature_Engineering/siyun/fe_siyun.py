@@ -8,6 +8,7 @@ import random
 import warnings
 import sys
 
+from sklearn.decomposition import PCA
 from sklearn.decomposition import TruncatedSVD
 from sklearn.preprocessing import OneHotEncoder, StandardScaler
 from sklearn.cluster import KMeans
@@ -57,7 +58,6 @@ def cumsum(df) :
 def avg_percent(x) :
     return np.sum(x) / len(x)
     
-    
 def test_type(x) :
     # 전부 A로 동일
     return  x[0]
@@ -104,7 +104,7 @@ def check_components(df) :
     # plt.show()
     return Km, inertia
 
-def svd(df) :
+def pca(df) :
     # svd를 진행할 대상을 고르기
     x = df[['KnowledgeTag']]
     
@@ -116,12 +116,16 @@ def svd(df) :
     # xx = x_encode.toarray()
     
     # k-means로 대략적으로 확인한 componenets를 바탕으로 설정
-    svd = TruncatedSVD(n_components=3)
-    encode_pca = svd.fit_transform(x_encode)
+    # svd = TruncatedSVD(n_components=3)
+    # encode_pca = svd.fit_transform(x_encode)
     
-    df['KnowledgeTag_SVD_1'] = encode_pca[:, 0] # 5개 주성분 중 첫 번째 주성분
-    df['KnowledgeTag_SVD_2'] = encode_pca[:, 1] # 5개 주성분 중 두 번째 주성분
-    df['KnowledgeTag_SVD_3'] = encode_pca[:, 2] # 5개 주성분 중 세 번째 주성분
+    # df['KnowledgeTag_SVD_1'] = encode_pca[:, 0] # 5개 주성분 중 첫 번째 주성분
+    # df['KnowledgeTag_SVD_2'] = encode_pca[:, 1] # 5개 주성분 중 두 번째 주성분
+    # df['KnowledgeTag_SVD_3'] = encode_pca[:, 2] # 5개 주성분 중 세 번째 주성분
+    
+    pca = PCA(n_components=1)
+    df['KnowledgeTag_pca'] = pca.fit_transform(x)
+    return df
     
 def total_input(df) :
     # SVD를 바탕으로 재해석한 Tag를 추가적인 input 생성
@@ -129,17 +133,19 @@ def total_input(df) :
     df['elapsed'] = df['elapsed'].fillna(0)
 
     X = df[['KnowledgeTag','paper_number','paper_type','paper_subtype',
-         'elapsed','cumulative','paper_number_percent','paper_type_percent','KnowledgeTag_percent','KnowledgeTag_SVD_1',
-       'KnowledgeTag_SVD_2', 'KnowledgeTag_SVD_3']]
+         'elapsed','cumulative','paper_number_percent',
+         'paper_type_percent','KnowledgeTag_percent','elapsed_pca']]
 
     return X
 
-df = elapsed(df)
-df = cumsum(df)
-df = type_percent(df)
-# if need
+
+# 결과를 여기에서 확인해보고 싶으면 밑의 명령어 입력
+# df = elapsed(df)
+# df = cumsum(df)
+# df = type_percent(df)
+# df = pca(df)
+# df = total_input(df)
+
+
+# run this code if you want to know how many clusters you need for decompositioning.
 # check_components(df)
-
-df = total_input(df)
-
-# print(df)
