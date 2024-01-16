@@ -1,3 +1,16 @@
+code/dkt/wandb
+code/boosting/wandb
+code/lightgcn/wandb
+
+*.pt
+*.npy
+*.pyc
+*__pycache__
+*.csv
+*.log
+*.json
+*.tfevents
+*.tsv
 # # data
 # # code/data
 # # code/eda
