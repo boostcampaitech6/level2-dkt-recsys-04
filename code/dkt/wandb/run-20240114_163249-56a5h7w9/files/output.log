@@ -1,0 +1,17 @@
+2024-01-14 16:32:53,185 - root - INFO - Building Model ...
+2024-01-14 16:32:53,192 - root - INFO - Start Training ...
+2024-01-14 16:32:53,495 - root - INFO - Start Training: Epoch 1
+Traceback (most recent call last):
+  File "/opt/ml/input/code/dkt/train.py", line 43, in <module>
+    main(args) # main함수 실행 -> 학습!!!!!!!!!!!
+  File "/opt/ml/input/code/dkt/train.py", line 36, in main
+    trainer.run(args=args, train_data=train_data, valid_data=valid_data, model=model)
+  File "/opt/ml/input/code/dkt/dkt/trainer.py", line 43, in run
+    train_auc, train_acc, train_loss = train(train_loader=train_loader,
+  File "/opt/ml/input/code/dkt/dkt/trainer.py", line 93, in train
+    preds = model(**batch) # **은 딕셔너리 받을 때 사용
+  File "/opt/ml/miniconda3/envs/dkt/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1518, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/opt/ml/miniconda3/envs/dkt/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1527, in _call_impl
+    return forward_call(*args, **kwargs)
+TypeError: LSTM.forward() got an unexpected keyword argument 'testId'
