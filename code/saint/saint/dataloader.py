@@ -3,11 +3,56 @@ import sys
 
 import numpy as np
 import pandas as pd
+import random
+import torch
+from sklearn.preprocessing import LabelEncoder
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(__file__))) + '/feture_engineering')
-import fe_siyun as siyun # 이 부분 수정 필요
+# import fe_siyun as siyun # 이 부분 수정 필요
 #from .feature_engineering import feat_eng_base  
 from torch.nn.utils.rnn import pad_sequence
+
+def elapsed(df) :
+    diff_train = df.loc[:, ['userID','Timestamp']].groupby('userID').diff().shift(-1)
+    diff_train = diff_train['Timestamp'].apply(lambda x : x.total_seconds())
+    df['elapsed'] = diff_train
+    
+    df.groupby('userID').apply(lambda x :x.iloc[:-1])
+
+    # 한 시간이 지나면 outlier로 처리
+    outlier = 1*3600
+    non_outlier = df[df['elapsed'] <= outlier]
+    # outlier에 해당하지 않는 row로 재구성 한 후 각 태그의 평균처리
+    mean_elapsed = non_outlier.groupby('KnowledgeTag')['elapsed'].mean()
+    df.loc[df['elapsed'] > outlier, 'elapsed'] = df[df['elapsed'] > outlier].apply(lambda x: mean_elapsed.get(x['KnowledgeTag'], x['elapsed']), axis=1)
+    df['elapsed'] = df['elapsed'].fillna(0)
+    return df
+
+def cumsum(df) :
+    # 누적합
+    _cumsum = df.loc[:, ['userID', 'answerCode']].groupby('userID').agg({'answerCode': 'cumsum'})
+    # 누적갯수
+    _cumcount = df.loc[:, ['userID', 'answerCode']].groupby('userID').agg({'answerCode': 'cumcount'}) + 1
+
+    cum_ans = _cumsum / _cumcount
+    df['cumulative'] = cum_ans['answerCode']
+
+    df['paper_number'] = df['assessmentItemID'].apply(lambda x: x[7:]) # assessmentItemID의 뒤에 3자리를 의미 -> 각 시험지 별로 문제번호
+    # item 열을 int16으로 변경
+    df["paper_number"] = df["paper_number"].astype("int16")
+    
+    return df
+
+def avg_percent(x) :
+    return np.sum(x) / len(x)
+
+def type_percent(df) :
+    # 위에서 처리한 type을 변환하여 각각의 정답률 처리
+
+    df['KnowledgeTag_percent'] = df.groupby('KnowledgeTag')['answerCode'].transform(avg_percent)
+
+    return df
+
 
 class Preprocess:
     def __init__(self,args):
@@ -39,9 +84,9 @@ class Preprocess:
         
         #con_col에 대한 전처리
         con_cols= ["elapsed", "KnowledgeTag_percent", "cumulative", "paper_number"]
-        df = siyun.elapsed(df)
-        df = siyun.cumsum(df)
-        df = siyun.type_percent(df)
+        df = elapsed(df)
+        df = cumsum(df)
+        df = type_percent(df)
         
         #cate_col에 대한 전처리
         cate_cols = ['assessmentItemID', 'testId', 'KnowledgeTag']

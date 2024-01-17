@@ -1,14 +1,20 @@
 import math
 import os
+import gc
+
+from tqdm import notebook
+from collections import OrderedDict
+
+import time
 
 import numpy as np
 import torch
 from torch import nn
 from torch.nn.functional import sigmoid
-import wandb
+# import wandb
 
 from .criterion import get_criterion
-from .dataloader import get_loaders
+from .dataloader import get_loaders, process_batch
 from .metric import get_metric
 from .model import Saint
 from .optimizer import get_optimizer
@@ -42,12 +48,12 @@ def run(args, train_data, valid_data, gradient=False):
     report = OrderedDict()
 
     # gradient step 분석에 사용할 변수
-    if gradient:
-        args.n_iteration = 0
-        args.gradient = OrderedDict()
+    # if gradient:
+    #     args.n_iteration = 0
+    #     args.gradient = OrderedDict()
 
-        # 모델의 gradient값을 가리키는 모델 명 저장
-        args.gradient['name'] = [name for name, _ in model.named_parameters()]
+    #     # 모델의 gradient값을 가리키는 모델 명 저장
+    #     args.gradient['name'] = [name for name, _ in model.named_parameters()]
 
     best_auc = -1
     best_auc_epoch = -1
@@ -102,10 +108,10 @@ def run(args, train_data, valid_data, gradient=False):
     report['best_acc_epoch'] = best_acc_epoch
 
     # save gradient informations
-    if gradient:
-        report['gradient'] = args.gradient
-        del args.gradient
-        del args['gradient']
+    # if gradient:
+    #     report['gradient'] = args.gradient
+    #     del args.gradient
+    #     del args['gradient']
 
     return report
 
@@ -125,9 +131,9 @@ def train(train_loader, model, optimizer, scheduler, args, gradient=False):
         loss.backward()
 
         # save gradient distribution
-        if gradient:
-            args.n_iteration += 1
-            args.gradient[f'iteration_{args.n_iteration}'] = get_gradient(model)
+        # if gradient:
+        #     args.n_iteration += 1
+        #     args.gradient[f'iteration_{args.n_iteration}'] = get_gradient(model)
 
         # grad clip
         if args.clip_grad:
@@ -247,18 +253,18 @@ def compute_loss(preds, targets, index):
 
     return loss
 
-def get_gradient(model):
-    gradient = []
+# def get_gradient(model):
+#     gradient = []
 
-    for name, param in model.named_parameters():
-        grad = param.grad
-        if grad != None:
-            gradient.append(grad.cpu().numpy().astype(np.float16))
-            # gradient.append(grad.clone().detach())
-        else:
-            gradient.append(None)
+#     for name, param in model.named_parameters():
+#         grad = param.grad
+#         if grad != None:
+#             gradient.append(grad.cpu().numpy().astype(np.float16))
+#             # gradient.append(grad.clone().detach())
+#         else:
+#             gradient.append(None)
 
-    return gradient
+#     return gradient
 
 def time_auc(report, n_epoch=10):
     total_time = 0
@@ -268,3 +274,10 @@ def time_auc(report, n_epoch=10):
         total_time += result['valid_time']
 
     return total_time, report['best_auc'], report['best_acc']
+
+# 데이터 증강 차후 개선
+def data_augmentation(data, args):
+    # if args.window == True:
+    #     data = slidding_window(data, args)
+
+    return data

@@ -1,5 +1,5 @@
 import argparse
-
+import torch
 
 def parse_args():
     # python script 실행할 때 인자를 수정하여 실행할 수 있다.
@@ -9,7 +9,7 @@ def parse_args():
     parser.add_argument("--device", default="cuda" if torch.cuda.is_available() else "cpu", type=str, help="cpu or gpu") 
     parser.add_argument(
         "--data_dir",
-        default="./data",
+        default="../data",
         type=str,
         help="data directory",
     )
@@ -55,7 +55,7 @@ def parse_args():
     # )
     
     # 데이터 증강 (Data Augmentation)
-    # parser.add_argument("--window", default=False, type=bool, help="use window")
+    parser.add_argument("--window", default=False, type=bool, help="use window")
     # parser.add_argument("--stride", default=300, type=int, help="window stride")
     # parser.add_argument("--shuffle", default=False, type=bool, help="use shuffle")
     # parser.add_argument("--shuffle_n", default=2, type=int, help="shuffle number")
@@ -66,7 +66,7 @@ def parse_args():
     )
     parser.add_argument("--n_layers", default=1, type=int, help="number of layers")
     parser.add_argument("--n_heads", default=4, type=int, help="number of heads")
-    parser.add_argument("--drop_out", default=0.0, type=float, help="drop out rate")
+    parser.add_argument("--dropout", default=0.0, type=float, help="drop out rate")
 
     # 훈련
     parser.add_argument("--n_epochs", default=10, type=int, help="number of epochs")

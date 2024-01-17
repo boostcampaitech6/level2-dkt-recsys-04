@@ -2,7 +2,7 @@ import os
 
 import numpy as np
 import torch
-import wandb
+# import wandb
 
 from saint import trainer
 from saint.args import parse_args
@@ -19,7 +19,7 @@ def main(args):
     args.device = "cuda" if torch.cuda.is_available() else "cpu"
     
     ################## 여기서 data 처리 이우러짐 #####################
-    logger.info("Preparing data ...")
+    # logger.info("Preparing data ...")
     preprocess = Preprocess(args)
     preprocess.load_train_data(file_name=args.file_name) # 데이터 로드한 것을 none이었던 self.train_data에 정의
     train_data = preprocess.get_train_data() # self.train_data을 반환
@@ -28,12 +28,12 @@ def main(args):
     #################################################################
 
     # 모델 선택
-    logger.info("Building Model ...")
+    # logger.info("Building Model ...")
     model: torch.nn.Module = trainer.get_model(args=args)
     
     # 학습 실행
-    logger.info("Start Training ...")
-    report = trainer.run(args=args, train_data=train_data, valid_data=valid_data, model=model)
+    # logger.info("Start Training ...")
+    report = trainer.run(args, train_data, valid_data, gradient=False)
     total_time, auc, acc = trainer.time_auc(report)
 
     print(f"Cost Time : {total_time} sec, best AUC : {auc}")
