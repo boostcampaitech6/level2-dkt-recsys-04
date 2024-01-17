@@ -9,25 +9,25 @@ def parse_args():
     parser.add_argument("--device", default="cuda" if torch.cuda.is_available() else "cpu", type=str, help="cpu or gpu") 
     parser.add_argument(
         "--data_dir",
-        default="/opt/ml/input/data/",
+        default="./data",
         type=str,
         help="data directory",
     )
-    parser.add_argument(
-        "--asset_dir", default="asset/", type=str, help="data directory"
-    )
+    # parser.add_argument(
+    #     "--asset_dir", default="asset/", type=str, help="data directory"
+    # )
     parser.add_argument(
         "--file_name", default="train_data.csv", type=str, help="train file name"
     )
-    parser.add_argument(
-        "--model_dir", default="models/", type=str, help="model directory"
-    )
-    parser.add_argument(
-        "--model_name", default="best_model.pt", type=str, help="model file name"
-    )
-    parser.add_argument(
-        "--output_dir", default="outputs/", type=str, help="output directory"
-    )
+    # parser.add_argument(
+    #     "--model_dir", default="models/", type=str, help="model directory"
+    # )
+    # parser.add_argument(
+    #     "--model_name", default="best_model.pt", type=str, help="model file name"
+    # )
+    # parser.add_argument(
+    #     "--output_dir", default="outputs/", type=str, help="output directory"
+    # )
     parser.add_argument(
         "--test_file_name", default="test_data.csv", type=str, help="test file name"
     )
@@ -35,26 +35,31 @@ def parse_args():
     parser.add_argument(
         "--max_seq_len", default=300, type=int, help="max sequence length"
     )
-    parser.add_argument("--num_workers", default=1, type=int, help="number of workers")
+    # parser.add_argument("--num_workers", default=1, type=int, help="number of workers")
 
     # [건우] feature 분류모음(자동화 위해 추가)
-    parser.add_argument(
-        "--cat_cols",
-        default=["testId", "assessmentItemID", "KnowledgeTag"], # "userID"로 묶을 것이기 때문에 "userID"는 제외
-        type=list,
-        help="categorical features",
-    )
-    parser.add_argument(
-        "--con_cols",
-        default=["elapsed", "KnowledgeTag_percent", "cumulative","paper_number"],
-        type=list,
-        help="numerical features",
-    )
-    parser.add_argument(
-        "--tgt_col", default=["answerCode"], type=list, help="target feature"
-    )
+    # parser.add_argument(
+    #     "--cat_cols",
+    #     default=["testId", "assessmentItemID", "KnowledgeTag"], # "userID"로 묶을 것이기 때문에 "userID"는 제외
+    #     type=list,
+    #     help="categorical features",
+    # )
+    # parser.add_argument(
+    #     "--con_cols",
+    #     default=["elapsed", "KnowledgeTag_percent", "cumulative","paper_number"],
+    #     type=list,
+    #     help="numerical features",
+    # )
+    # parser.add_argument(
+    #     "--tgt_col", default=["answerCode"], type=list, help="target feature"
+    # )
     
-
+    # 데이터 증강 (Data Augmentation)
+    # parser.add_argument("--window", default=False, type=bool, help="use window")
+    # parser.add_argument("--stride", default=300, type=int, help="window stride")
+    # parser.add_argument("--shuffle", default=False, type=bool, help="use shuffle")
+    # parser.add_argument("--shuffle_n", default=2, type=int, help="shuffle number")
+    
     # 모델
     parser.add_argument(
         "--hidden_dim", default=128, type=int, help="hidden dimension size"
@@ -68,11 +73,11 @@ def parse_args():
     parser.add_argument("--batch_size", default=64, type=int, help="batch size")
     parser.add_argument("--lr", default=0.0001, type=float, help="learning rate")
     parser.add_argument("--clip_grad", default=2.0, type=int, help="clip grad")
-    parser.add_argument("--patience", default=5, type=int, help="for early stopping")
+    # parser.add_argument("--patience", default=5, type=int, help="for early stopping")
 
-    parser.add_argument(
-        "--log_steps", default=50, type=int, help="print log per n steps"
-    )
+    # parser.add_argument(
+    #     "--log_steps", default=50, type=int, help="print log per n steps"
+    # )
 
     ### 중요 ###
     parser.add_argument("--model", default="saint", type=str, help="model type")
