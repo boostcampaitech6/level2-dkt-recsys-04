@@ -259,3 +259,12 @@ def get_gradient(model):
             gradient.append(None)
 
     return gradient
+
+def time_auc(report, n_epoch=10):
+    total_time = 0
+    for epoch in range(1, n_epoch + 1):
+        result = report[str(epoch)]
+        total_time += result['train_time']
+        total_time += result['valid_time']
+
+    return total_time, report['best_auc'], report['best_acc']
