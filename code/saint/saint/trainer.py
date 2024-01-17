@@ -259,4 +259,3 @@ def get_gradient(model):
             gradient.append(None)
 
     return gradient
-
