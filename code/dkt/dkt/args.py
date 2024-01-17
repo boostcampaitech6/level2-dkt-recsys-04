@@ -45,7 +45,7 @@ def parse_args():
         help="categorical features",
     )
     parser.add_argument(
-        "-con_cols",
+        "--con_cols",
         default=["elapsed", "KnowledgeTag_percent", "cumulative"],
         type=list,
         help="numerical features",
