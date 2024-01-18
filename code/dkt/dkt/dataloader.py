@@ -1,6 +1,7 @@
 import os
 import random
 import time
+import sys
 from datetime import datetime
 from typing import Tuple
 
@@ -9,9 +10,14 @@ import pandas as pd
 import torch
 from sklearn.preprocessing import LabelEncoder
 
+# feature_engineering 추가
+sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(__file__)))) + '/Feature_Engineering')
+import sehoon.feat_eng_sehoon as sehoon
 
-# feature_engineering
-from .feature_engineering import feat_eng_base 
+# logger 추가
+from dkt.utils import get_logger, set_seeds, logging_conf, get_data_info
+logger = get_logger(logging_conf)
+
 
 class Preprocess:
     def __init__(self, args):
@@ -25,34 +31,33 @@ class Preprocess:
     def get_test_data(self):
         return self.test_data
 
-    def split_data(self,
-                   data: np.ndarray,
-                   ratio: float = 0.7,
-                   shuffle: bool = True,
-                   seed: int = 0) -> Tuple[np.ndarray]:
-        """
-        split data into two parts with a given ratio.
-        """
-        if shuffle:
-            random.seed(seed)  # fix to default seed 0
-            random.shuffle(data)
-
-        size = int(len(data) * ratio)
-        data_1 = data[:size]
-        data_2 = data[size:]
-        return data_1, data_2
-
     def __save_labels(self, encoder: LabelEncoder, name: str) -> None:
         le_path = os.path.join(self.args.asset_dir, name + "_classes.npy")
         np.save(le_path, encoder.classes_)
 
     # 카테고리 변수 라벨 인코딩
     def __preprocessing(self, df: pd.DataFrame, is_train: bool = True) -> pd.DataFrame:
-        cate_cols = self.args.cat_cols
+        
+        # Timestamp는 Feature Engineering 했다고 보고 삭제 조치
+        df = df.drop('Timestamp', axis=1)
+        
+        setattr(self.args, 'columns', list(df.columns))
+        setattr(self.args, 'y_column', 'answerCode')
+        setattr(self.args, 'excluded_columns', ['userID'])
+        setattr(self.args, 'X_columns', [column for column in self.args.columns if column not in [self.args.y_column] + self.args.excluded_columns])
+
+        # 카테고리 feature 지정 : cat_로 시작하는 모든 컬럼
+        default_cate_cols = ["assessmentItemID", "testId", "KnowledgeTag"]
+        for col in self.args.X_columns:
+            if col.startswith('cat_'):
+                default_cate_cols.append(col)
+        setattr(self.args, 'cat_cols', default_cate_cols)
+        setattr(self.args, 'con_cols', [col for col in self.args.X_columns if col not in self.args.cat_cols])
+        
         if not os.path.exists(self.args.asset_dir):
             os.makedirs(self.args.asset_dir)
 
-        for col in cate_cols:
+        for col in self.args.cat_cols:
             le = LabelEncoder()
             if is_train:
                 # For UNKNOWN class
@@ -72,15 +77,25 @@ class Preprocess:
             test = le.transform(df[col])
             df[col] = test
 
+        logger.info("  🪛 Preprocessing Done.")
+        
         return df
     
 
 
     def __feature_engineering(self, df: pd.DataFrame) -> pd.DataFrame:
         # TODO: Fill in if needed
-        df = feat_eng_base.elapsed(df)
-        df = feat_eng_base.cumsum(df)
-        df = feat_eng_base.type_percent(df)
+        
+        # df = sehoon.feat_elapsed(df)
+        # df = sehoon.feat_elapsed_cumsum(df)
+        # df = sehoon.feat_ass_correct_stats(df, 'mean')
+        # df = sehoon.feat_user_answer_acc_per(df)
+        # df = sehoon.feat_relative_answer_score(df)
+        # df = sehoon.feat_normalized_elapsed(df)
+        # df = sehoon.feat_relative_elapsed_time(df)
+        
+        logger.info("  🔨 Feature Engineering Done.")
+        
         return df
 
     # csv data 로드 + feature engineering + 정리 -> 튜플로 반환
@@ -98,8 +113,6 @@ class Preprocess:
         for col in self.args.cat_cols:
             setattr(self.args, f'n_{col}', len(np.load(os.path.join(self.args.asset_dir, f'{col}_classes.npy'))))
         
-
-        df = df.sort_values(by=["userID", "Timestamp"], axis=0)
         columns = self.args.cat_cols + self.args.con_cols + self.args.tgt_col # [건우] 자동화 코드(추가)
         group = (
             df
@@ -108,6 +121,10 @@ class Preprocess:
                 lambda r: tuple(r[col].values for col in columns) # [건우] 자동화 코드(추가)
                 )
             )
+        
+        ################## 데이터 확인 #####################
+        get_data_info(logger, df, group, self.args)
+        
         return group.values 
 
     # (csv data 로드 + feature engineering + 정리)한 것을 none이었던 self.train_data에 정의
@@ -196,3 +213,110 @@ def get_loaders(args, train: np.ndarray, valid: np.ndarray) -> Tuple[torch.utils
 
     return train_loader, valid_loader
 
+def get_loaders_kfold(args, train, train_idx, valid_idx) -> Tuple[torch.utils.data.DataLoader]:
+    pin_memory = False
+    train_loader, valid_loader = None, None
+
+    trainset = DKTDataset(train, args)
+    # torch.utils.data.DataLoader : model에 feed(batch, shuffle, cpu와 gpu변환)
+    train_loader = torch.utils.data.DataLoader(
+        trainset,
+        num_workers=args.num_workers,
+        batch_size=args.batch_size,
+        pin_memory=pin_memory,
+        sampler=train_idx
+    )
+    valset = DKTDataset(train, args)
+    valid_loader = torch.utils.data.DataLoader(
+        valset,
+        num_workers=args.num_workers,
+        batch_size=args.batch_size,
+        pin_memory=pin_memory,
+        sampler=valid_idx
+    )
+
+    return train_loader, valid_loader
+
+def split_data(data: np.ndarray,
+               ratio: float = 0.7,
+               shuffle: bool = True,
+               seed: int = 0) -> Tuple[np.ndarray]:
+    """
+    split data into two parts with a given ratio.
+    """
+    if shuffle:
+        random.seed(seed)  # fix to default seed 0
+        random.shuffle(data)
+
+    size = int(len(data) * ratio)
+    data_1 = data[:size]
+    data_2 = data[size:]
+    
+    logger.info(f"Split Data Info")
+    logger.info(f"  Train : {len(data_1)}")
+    logger.info(f"  Valid : {len(data_2)}")
+    
+    return data_1, data_2
+
+
+################### data augmentation ###################
+def data_augmentation(train_data, args):
+    
+    augmented_train_data = slidding_window(train_data, args)
+    
+    logger.info(f"  Data Augmentation applied. Train data {len(train_data)} -> {len(augmented_train_data)}")
+    
+    return augmented_train_data
+
+def slidding_window(data, args):
+    window_size = args.max_seq_len
+    stride = args.stride
+    
+    augmented_datas_list = []
+    for row in data:
+        seq_len = len(row[0])
+
+        # 만약 window 크기보다 seq len이 같거나 작으면 augmentation을 하지 않는다
+        if seq_len <= window_size:
+            augmented_datas_list.append(row)
+        else:
+            total_window = ((seq_len - window_size) // stride) + 1
+
+            # 앞에서부터 slidding window 적용
+            for window_i in range(total_window):
+                # window로 잘린 데이터를 모으는 리스트
+                window_data = []
+                for col in row:
+                    window_data.append(
+                        col[window_i * stride : window_i * stride + window_size]
+                    )
+
+                # Shuffle
+                # 마지막 데이터의 경우 shuffle을 하지 않는다
+                if args.shuffle and window_i + 1 != total_window:
+                    shuffle_datas = shuffle(window_data, window_size, args)
+                    augmented_datas_list += shuffle_datas
+                else:
+                    augmented_datas_list.append(tuple(window_data))
+
+            # slidding window에서 뒷부분이 누락될 경우 추가
+            total_len = window_size + (stride * (total_window - 1))
+            if seq_len != total_len:
+                window_data = []
+                for col in row:
+                    window_data.append(col[-window_size:])
+                augmented_datas_list.append(tuple(window_data))
+
+    return augmented_datas_list
+
+def shuffle(data, data_size, args):
+    shuffle_datas = []
+    for i in range(args.shuffle_n):
+        # shuffle 횟수만큼 window를 랜덤하게 계속 섞어서 데이터로 추가
+        shuffle_data = []
+        random_index = np.random.permutation(data_size)
+        for col in data:
+            shuffle_data.append(col[random_index])
+        shuffle_datas.append(tuple(shuffle_data))
+    return shuffle_datas
+################### data augmentation ###################
