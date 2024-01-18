@@ -61,6 +61,8 @@ class ModelBase(nn.Module):
             embed_cat_feat = getattr(self, f'embedding_{cat_col}')(value.int()) # self.embedding_xxx(xxx.int())
             embed_cat_feats.append(embed_cat_feat)
         embed = torch.cat([embed_interaction,*embed_cat_feats],dim=2) # dim=2는 3차원을 합친다는 의미
+        # [승준] encoder embed 추가
+        enc_embed = torch.cat([*embed_cat_feats],dim=2)
 
         # continious concat
         con_feats = []
@@ -69,10 +71,14 @@ class ModelBase(nn.Module):
             con_feats.append(value.unsqueeze(2))
         embed = torch.cat([embed,*con_feats], dim=2).float()
         ################# [건우] ###############
-        
+        # [승준] encoder embed concat
+        enc_embed = torch.cat([enc_embed,*con_feats], dim=2).float()
+
         X = self.comb_proj(embed) # concat후 feature_size=Hidden dimension으로 선형변환
+        # [승준] encoder embed proj 추가
+        enc_X = self.enc_comb_proj(enc_embed)
         # [찬우] LastQuery 모델의 positional_encoding을 위한 seq_len 추가
-        return X, batch_size, seq_len # embedding을 concat하고 선형 변환한 값
+        return enc_X, X, batch_size, seq_len # embedding을 concat하고 선형 변환한 값
 
 
 class LSTM(ModelBase):
@@ -111,7 +117,7 @@ class LSTMATTN(ModelBase):
         self.attn = BertEncoder(self.config)
 
     def forward(self, data):
-        X, batch_size, _ = super().forward(data) # [건우] 각각 안 받고 data로 한 번에 받음
+        _, X, batch_size, _ = super().forward(data) # [건우] 각각 안 받고 data로 한 번에 받음
 
         out, _ = self.lstm(X)
         out = out.contiguous().view(batch_size, -1, self.hidden_dim)
@@ -144,7 +150,7 @@ class BERT(ModelBase):
         self.encoder = BertModel(self.config)
 
     def forward(self, data):
-        X, batch_size, _ = super().forward(data) # [건우] 각각 안 받고 data로 한 번에 받음
+        _, X, batch_size, _ = super().forward(data) # [건우] 각각 안 받고 data로 한 번에 받음
 
         encoded_layers = self.encoder(inputs_embeds=X, attention_mask=data["mask"])
         out = encoded_layers[0]
@@ -213,7 +219,7 @@ class LastQuery(ModelBase):
 
 
     def forward(self, data):
-        X, batch_size, seq_len = super().forward(data)
+        _, X, batch_size, seq_len = super().forward(data)
 
         # Positional Embedding
         # last query에서는 positional embedding을 하지 않음
@@ -257,4 +263,88 @@ class LastQuery(ModelBase):
         out = out.contiguous().view(batch_size, -1, self.hidden_dim)
         out = self.fc(out).view(batch_size, -1)
 
+        return out
+    
+class PositionalEncoding(nn.Module):
+    def __init__(self, d_model, dropout=0.1, max_len=1000):
+        super(PositionalEncoding, self).__init__()
+        self.dropout = nn.Dropout(p=dropout)
+        self.scale = nn.Parameter(torch.ones(1))
+        
+        # input embedding
+        pe = torch.zeros(max_len, d_model) ## max_len X hidden_dim
+        position = torch.arange(0, max_len, dtype=torch.float).unsqueeze(1) #0부터 sequence 길이만큼 position 값 생성, 1 X max_len
+        div_term = torch.exp(torch.arange(
+            0, d_model, 2).float() * (-math.log(10000.0) / d_model))
+        pe[:, 0::2] = torch.sin(position * div_term)
+        pe[:, 1::2] = torch.cos(position * div_term)
+        pe = pe.unsqueeze(0).transpose(0, 1)
+        self.register_buffer('pe', pe)
+
+    def forward(self, x):
+        x = x + self.scale * self.pe[:x.size(0), :]
+        return self.dropout(x)
+
+class Saint(ModelBase):
+
+    def __init__(self, args):
+        super(Saint, self).__init__(args)
+        torch.autograd.set_detect_anomaly(True)
+        self.args = args
+        self.device = args.device
+       
+        # Positional encoding
+        self.pos_encoder = PositionalEncoding(self.hidden_dim, self.drop_out, self.max_seq_len)
+        self.pos_decoder = PositionalEncoding(self.hidden_dim, self.drop_out, self.max_seq_len)
+        
+        self.transformer = nn.Transformer(
+            d_model=self.hidden_dim,
+            nhead=self.n_heads,
+            num_encoder_layers=self.n_layers,
+            num_decoder_layers=self.n_layers,
+            dim_feedforward=self.hidden_dim,
+            dropout=self.drop_out,
+            activation='relu')
+
+        self.enc_mask = None
+        self.dec_mask = None
+        self.enc_dec_mask = None
+
+    def get_mask(self, seq_len):
+        mask = torch.from_numpy(np.triu(np.ones((seq_len, seq_len)), k=1))
+
+        return mask.masked_fill(mask==1, float('-inf'))
+
+    def forward(self, data):
+        
+        seq_emb_enc, seq_emb_dec, batch_size, seq_len = super().forward(data)
+        
+        # ATTENTION MASK 생성
+        # encoder하고 decoder의 mask는 가로 세로 길이가 모두 동일하여
+        # 사실 이렇게 3개로 나눌 필요가 없다
+        if self.enc_mask is None or self.enc_mask.size(0) != seq_len:
+            self.enc_mask = self.get_mask(seq_len).to(self.device).to(torch.float32)
+
+        if self.dec_mask is None or self.dec_mask.size(0) != seq_len:
+            self.dec_mask = self.get_mask(seq_len).to(self.device).to(torch.float32)
+
+        if self.enc_dec_mask is None or self.enc_dec_mask.size(0) != seq_len:
+            self.enc_dec_mask = self.get_mask(seq_len).to(self.device).to(torch.float32)
+
+        seq_emb_enc = seq_emb_enc.permute(1, 0, 2)
+        seq_emb_dec = seq_emb_dec.permute(1, 0, 2)
+
+        # Positional encoding custum
+        seq_emb_enc = self.pos_encoder(seq_emb_enc)
+        seq_emb_dec = self.pos_decoder(seq_emb_dec)
+
+        out = self.transformer(seq_emb_enc, seq_emb_dec,
+                               src_mask=self.enc_mask,
+                               tgt_mask=self.dec_mask,
+                               memory_mask=self.enc_dec_mask)
+  
+        out = out.permute(1, 0, 2)
+        out = out.contiguous().view(batch_size, -1, self.hidden_dim)
+        out = self.fc(out).view(batch_size, -1)
+        
         return out
