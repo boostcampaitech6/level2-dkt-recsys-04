@@ -9,7 +9,6 @@ from lightgcn.datasets import prepare_dataset
 from lightgcn import trainer
 from lightgcn.utils import get_logger, set_seeds, logging_conf
 
-
 logger = get_logger(logging_conf)
 
 
@@ -25,6 +24,8 @@ def main(args: argparse.Namespace):
     train_data, test_data, n_node = prepare_dataset(device=device, data_dir=args.data_dir)
 
     logger.info("Building Model ...")
+
+    
     model = trainer.build(
         n_node=n_node,
         embedding_dim=args.hidden_dim,
@@ -34,14 +35,35 @@ def main(args: argparse.Namespace):
     model = model.to(device)
     
     logger.info("Start Training ...")
-    trainer.run(
-        model=model,
-        train_data=train_data,
-        n_epochs=args.n_epochs,
-        learning_rate=args.lr,
-        model_dir=args.model_dir,
+    # feat siyun : add arguments for training result
+    ## ----------------------------
+    if args.purpose == 'result' :
+    ## ----------------------------
+        # baseline
+        trainer.run(
+            args=args,
+            model=model,
+            train_data=train_data,
+            n_epochs=args.n_epochs,
+            learning_rate=args.lr,
+            model_dir=args.model_dir,
+        )
+    # feat siyun : add arguments when purpose is embedding
+    ## -----------------------
+    elif args.purpose == 'embedding' :
+        embeddings = trainer.run(
+            args=args,
+            model=model,
+            train_data=train_data,
+            valid_data = None,
+            n_epochs = args.n_epochs,
+            learning_rate=args.lr,
+            model_dir=args.model_dir,
     )
-
+        # torch.save(embeddings, 'embeddings.pt')
+        
+    ## -----------------------
+    
 
 if __name__ == "__main__":
     args = parse_args()
