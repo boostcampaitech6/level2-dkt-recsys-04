@@ -27,7 +27,7 @@ train.py
     - embedding : lightgcn의 학습 결과에 대한 user,item에 대한 embedding으로 반환합니다.
         - how to open
             ```
-            path = data_dir
+            path = args.data_dir
             model = torch.load(path + 'embeddings.pt')
             ```
 
