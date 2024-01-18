@@ -12,7 +12,7 @@ from sklearn.preprocessing import LabelEncoder
 
 # feature_engineering 추가
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(__file__)))) + '/Feature_Engineering')
-import sehoon.feat_eng_sehoon as sehoon
+#import sehoon.feat_eng_sehoon as sehoon
 
 # logger 추가
 from dkt.utils import get_logger, set_seeds, logging_conf, get_data_info
@@ -270,7 +270,7 @@ def data_augmentation(train_data, args):
 
 def slidding_window(data, args):
     window_size = args.max_seq_len
-    stride = args.stride
+    stride = args.max_seq_len
     
     augmented_datas_list = []
     for row in data:

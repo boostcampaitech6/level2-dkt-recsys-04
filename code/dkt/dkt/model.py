@@ -1,6 +1,7 @@
 import torch
 import torch.nn as nn
 from transformers.models.bert.modeling_bert import BertConfig, BertEncoder, BertModel
+import torch.nn.functional as F
 
 import pandas as pd
 
@@ -18,6 +19,7 @@ class ModelBase(nn.Module):
         self.n_heads = args.n_heads
         self.drop_out = args.drop_out
         self.max_seq_len = args.max_seq_len
+        self.device = args.device
         
         # [건우] category변수의 unique의 개수를 저장한 것을 불러옴
         self.n_args = [arg for arg in vars(self.args) if arg.startswith('n_')]
@@ -44,6 +46,8 @@ class ModelBase(nn.Module):
     def forward(self, data):
         interaction = data["interaction"]
         batch_size = interaction.size(0)
+        # [찬우] seq_len 추가
+        seq_len = interaction.size(1)
 
         ####### [건우] Embedding + concat ######  
         # category embeding + concat
@@ -65,7 +69,8 @@ class ModelBase(nn.Module):
         ################# [건우] ###############
         
         X = self.comb_proj(embed) # concat후 feature_size=Hidden dimension으로 선형변환
-        return X, batch_size # embedding을 concat하고 선형 변환한 값
+        # [찬우] LastQuery 모델의 positional_encoding을 위한 seq_len 추가
+        return X, batch_size, seq_len # embedding을 concat하고 선형 변환한 값
 
 
 class LSTM(ModelBase):
@@ -78,7 +83,7 @@ class LSTM(ModelBase):
     def forward(self, data):
         # X는 embedding들을 concat한 값
         # super().forward은 부모객체의 forward메소드를 말함
-        X, batch_size = super().forward(data) # [건우] 각각 안 받고 data로 한 번에 받음
+        X, batch_size, _ = super().forward(data) # [건우] 각각 안 받고 data로 한 번에 받음
         out, _ = self.lstm(X)
         out = out.contiguous().view(batch_size, -1, self.hidden_dim)
         out = self.fc(out).view(batch_size, -1)
@@ -104,7 +109,7 @@ class LSTMATTN(ModelBase):
         self.attn = BertEncoder(self.config)
 
     def forward(self, data):
-        X, batch_size = super().forward(data) # [건우] 각각 안 받고 data로 한 번에 받음
+        X, batch_size, _ = super().forward(data) # [건우] 각각 안 받고 data로 한 번에 받음
 
         out, _ = self.lstm(X)
         out = out.contiguous().view(batch_size, -1, self.hidden_dim)
@@ -137,10 +142,117 @@ class BERT(ModelBase):
         self.encoder = BertModel(self.config)
 
     def forward(self, data):
-        X, batch_size = super().forward(data) # [건우] 각각 안 받고 data로 한 번에 받음
+        X, batch_size, _ = super().forward(data) # [건우] 각각 안 받고 data로 한 번에 받음
 
         encoded_layers = self.encoder(inputs_embeds=X, attention_mask=data["mask"])
         out = encoded_layers[0]
         out = out.contiguous().view(batch_size, -1, self.hidden_dim)
         out = self.fc(out).view(batch_size, -1)
+        return out
+
+
+##LastQuery 추가
+
+
+class Feed_Forward_block(nn.Module):
+    """
+    out =  Relu( M_out*w1 + b1) *w2 + b2
+    """
+    def __init__(self, dim_ff):
+        super().__init__()
+        self.layer1 = nn.Linear(in_features=dim_ff, out_features=dim_ff)
+        self.layer2 = nn.Linear(in_features=dim_ff, out_features=dim_ff)
+
+    def forward(self,ffn_in):
+        return self.layer2(F.relu(self.layer1(ffn_in)))
+
+class LastQuery(ModelBase):
+    def __init__(self, args):
+        super().__init__(args)
+        
+        # Encoder
+        self.query = nn.Linear(in_features=self.hidden_dim, out_features=self.hidden_dim)
+        self.key = nn.Linear(in_features=self.hidden_dim, out_features=self.hidden_dim)
+        self.value = nn.Linear(in_features=self.hidden_dim, out_features=self.hidden_dim)
+
+        self.attn = nn.MultiheadAttention(embed_dim=self.hidden_dim, num_heads=self.n_heads)
+        self.mask = None # last query에서는 필요가 없지만 수정을 고려하여서 넣어둠
+        self.ffn = Feed_Forward_block(self.hidden_dim)      
+
+        self.ln1 = nn.LayerNorm(self.hidden_dim)
+        self.ln2 = nn.LayerNorm(self.hidden_dim)
+
+        # LSTM
+        self.lstm = nn.LSTM(
+            self.hidden_dim,
+            self.hidden_dim,
+            self.n_layers,
+            batch_first=True)
+
+
+    def get_pos(self, seq_len):
+        # use sine positional embeddinds
+        return torch.arange(seq_len).unsqueeze(0)
+ 
+    def init_hidden(self, batch_size):
+        h = torch.zeros(
+            self.n_layers,
+            batch_size,
+            self.hidden_dim)
+        h = h.to(self.device)
+
+        c = torch.zeros(
+            self.n_layers,
+            batch_size,
+            self.hidden_dim)
+        c = c.to(self.device)
+
+        return (h, c)
+
+
+    def forward(self, data):
+        X, batch_size, seq_len = super().forward(data)
+
+        # Positional Embedding
+        # last query에서는 positional embedding을 하지 않음
+        # position = self.get_pos(seq_len).to('cuda')
+        # embed_pos = self.embedding_position(position)
+        # embed = embed + embed_pos
+
+        ####################### ENCODER #####################
+
+        q = self.query(X).permute(1, 0, 2)
+        
+        
+        q = self.query(X)[:, -1:, :].permute(1, 0, 2)
+        
+        
+        
+        k = self.key(X).permute(1, 0, 2)
+        v = self.value(X).permute(1, 0, 2)
+
+        ## attention
+        # last query only
+        out, _ = self.attn(q, k, v)
+        
+        ## residual + layer norm
+        out = out.permute(1, 0, 2)
+        out = X + out
+        out = self.ln1(out)
+
+        ## feed forward network
+        out = self.ffn(out)
+
+        ## residual + layer norm
+        out = X + out
+        out = self.ln2(out)
+
+        ###################### LSTM #####################
+        hidden = self.init_hidden(batch_size)
+        out, hidden = self.lstm(out, hidden)
+
+        ###################### DNN #####################
+        out = out.contiguous().view(batch_size, -1, self.hidden_dim)
+        out = self.fc(out).view(batch_size, -1)
+
         return out
