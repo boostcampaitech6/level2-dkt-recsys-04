@@ -1,0 +1,16 @@
+2024-01-14 07:23:51,397 - root - INFO - Building Model ...
+2024-01-14 07:23:51,398 - root - WARNING - Error while loading lstm with args: {'hidden_dim': 64, 'n_layers': 2, 'n_heads': 2, 'drop_out': 0.2, 'max_seq_len': 20}
+Traceback (most recent call last):
+  File "/opt/ml/input/code/dkt/train.py", line 42, in <module>
+    main(args) # main함수 실행 -> 학습!!!!!!!!!!!
+  File "/opt/ml/input/code/dkt/train.py", line 32, in main
+    model: torch.nn.Module = trainer.get_model(args=args).to(args.device)
+  File "/opt/ml/input/code/dkt/dkt/trainer.py", line 190, in get_model
+    raise e
+  File "/opt/ml/input/code/dkt/dkt/trainer.py", line 181, in get_model
+    model = {
+  File "/opt/ml/input/code/dkt/dkt/model.py", line 55, in __init__
+    super().__init__(
+  File "/opt/ml/input/code/dkt/dkt/model.py", line 10, in __init__
+    self.cat_cols = args.cat_cols
+AttributeError: 'int' object has no attribute 'cat_cols'

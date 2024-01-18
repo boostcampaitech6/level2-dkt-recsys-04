@@ -1,0 +1,19 @@
+
+2024-01-14 16:26:32,552 - root - INFO - Building Model ...
+Traceback (most recent call last):
+  File "/opt/ml/input/code/dkt/dkt/trainer.py", line 182, in get_model
+    model = {
+TypeError: LSTM.__init__() got an unexpected keyword argument 'hidden_dim'
+During handling of the above exception, another exception occurred:
+Traceback (most recent call last):
+  File "/opt/ml/input/code/dkt/train.py", line 43, in <module>
+    main(args) # main함수 실행 -> 학습!!!!!!!!!!!
+  File "/opt/ml/input/code/dkt/train.py", line 32, in main
+    model: torch.nn.Module = trainer.get_model(args=args).to(args.device)
+  File "/opt/ml/input/code/dkt/dkt/trainer.py", line 190, in get_model
+    logger.warn("Error while loading %s with args: %s", model_name,**model_args)
+  File "/opt/ml/miniconda3/envs/dkt/lib/python3.10/logging/__init__.py", line 1494, in warn
+    self.warning(msg, *args, **kwargs)
+  File "/opt/ml/miniconda3/envs/dkt/lib/python3.10/logging/__init__.py", line 1489, in warning
+    self._log(WARNING, msg, args, **kwargs)
+TypeError: Logger._log() got multiple values for argument 'args'
