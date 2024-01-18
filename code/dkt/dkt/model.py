@@ -4,7 +4,8 @@ from transformers.models.bert.modeling_bert import BertConfig, BertEncoder, Bert
 import torch.nn.functional as F
 
 import pandas as pd
-
+import numpy as np
+import math # [승준] positional encoding을 위한 math 패키지, numpy 추가
 
 class ModelBase(nn.Module):
     def __init__(self, args):
@@ -39,7 +40,8 @@ class ModelBase(nn.Module):
 
         # [건우] nn.Linear의 첫 번째 argument 수정
         self.comb_proj = nn.Linear(intd * (len(self.args.cat_cols) +1)+len(self.args.con_cols), hd) # intd가 embedding차원이라 category만 적용
-
+        # [승준] encoder comb_proj 추가
+        self.enc_comb_proj = nn.Linear(intd * (len(self.args.cat_cols))+len(self.args.con_cols), hd)
         # Fully connected layer
         self.fc = nn.Linear(hd, 1) # 통과하면 feature차원이 1
     
