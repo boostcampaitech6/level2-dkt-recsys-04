@@ -20,7 +20,7 @@ def parse_args():
     parser.add_argument("--device", default="cpu", type=str, help="cpu or gpu") # default가 cpu라서 꼭 gpu라고 줘야함
     parser.add_argument(
         "--data_dir",
-        default="/opt/ml/input/data/",
+        default="/data/ephemeral/data",
         type=str,
         help="data directory",
     )
@@ -48,6 +48,7 @@ def parse_args():
     )
     parser.add_argument("--num_workers", default=1, type=int, help="number of workers")
 
+    '''
     # [찬우] Data Augumentation 추가
     parser.add_argument(
         "--window", default=False, type=str2bool, help="window usage status"
@@ -61,9 +62,10 @@ def parse_args():
     parser.add_argument(
         "--shuffle_n", default=2, type=int, help="shuffle"
     )
-
+    '''
 
     # [건우] feature 분류모음(자동화 위해 추가)
+    '''
     parser.add_argument(
         "--cat_cols",
         #default=["testId", "assessmentItemID", "KnowledgeTag","paper_number"], # "userID"로 묶을 것이기 때문에 "userID"는 제외
@@ -73,12 +75,13 @@ def parse_args():
         help="categorical features",
     )
     parser.add_argument(
-        "-con_cols",
+        "--con_cols",
         #default=["elapsed", "KnowledgeTag_percent", "cumulative"],
         default=["elapsed"],
         type=list,
         help="numerical features",
     )
+    '''
     parser.add_argument(
         "--tgt_col", default=["answerCode"], type=list, help="target feature"
     )
@@ -98,6 +101,19 @@ def parse_args():
     parser.add_argument("--lr", default=0.0001, type=float, help="learning rate")
     parser.add_argument("--clip_grad", default=10, type=int, help="clip grad")
     parser.add_argument("--patience", default=5, type=int, help="for early stopping")
+
+    #### 옵션 ####
+    # 공통
+    parser.add_argument("--ratio", default=0.7, type=float, help="data split ratio")
+    parser.add_argument("--shuffle", default=True, type=bool, help="data augmentation")
+    # data augmentation
+    parser.add_argument("--augmentation", default="window", choices=['', 'window'], type=str, help="data augmentation")
+
+
+    parser.add_argument("--stride", default=None, type=int, help="data augmentation")
+    parser.add_argument("--shuffle_n", default=3, type=int, help="Mix data randomly and add them as data")
+    # K-fold
+    parser.add_argument("--kfold_splits", default=0, type=int, help="apply k-fold if 1 or more (minimum 5)")
 
     parser.add_argument(
         "--log_steps", default=50, type=int, help="print log per n steps"
