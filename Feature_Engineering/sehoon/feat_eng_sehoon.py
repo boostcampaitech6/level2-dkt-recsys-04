@@ -33,7 +33,7 @@ def feat_user_correct_stats(df : pd.DataFrame, static : str) -> pd.DataFrame:
 # mean, median, std
 def feat_ass_correct_stats(df : pd.DataFrame, static : str) -> pd.DataFrame:
     df = df.copy()
-    col_name = 'ass_answer_' + static
+    col_name = 'cat_' + 'ass_answer_' + static
     ass_cor_accuracy = df.groupby('assessmentItemID')['answerCode'].agg([static])
     df[col_name] = df['assessmentItemID'].map(ass_cor_accuracy[static])
     

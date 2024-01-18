@@ -23,8 +23,6 @@ def main(args):
     preprocess = Preprocess(args)
     preprocess.load_train_data(file_name=args.file_name) # 데이터 로드한 것을 none이었던 self.train_data에 정의
     train_data: np.ndarray = preprocess.get_train_data() # self.train_data을 반환
-    train_data, valid_data = preprocess.split_data(data=train_data)
-    wandb.init(project="dkt", config=vars(args))
     #################################################################
 
     # 모델 선택
@@ -33,7 +31,13 @@ def main(args):
     
     # 학습 실행
     logger.info("Start Training ...")
-    trainer.run(args=args, train_data=train_data, valid_data=valid_data, model=model)
+    
+    # k-fold 적용
+    if args.kfold_splits == 0:
+        trainer.run(args=args, train_data=train_data, model=model)
+    else:
+        trainer.run_kfold(args, train_data, model)
+    
 
 # Python 인터프리터는 스크립트를 실행할 때 __name__을 "__main__"으로 설정
 if __name__ == "__main__":

@@ -6,14 +6,15 @@ import torch
 from torch import nn
 from torch.nn.functional import sigmoid
 import wandb
+from sklearn.model_selection import KFold
 
 from .criterion import get_criterion
-from .dataloader import get_loaders
+from .dataloader import get_loaders, get_loaders_kfold, data_augmentation, split_data
 from .metric import get_metric
 from .model import LSTM, LSTMATTN, BERT
 from .optimizer import get_optimizer
 from .scheduler import get_scheduler
-from .utils import get_logger, logging_conf
+from .utils import get_logger, logging_conf, get_save_time
 
 
 logger = get_logger(logger_conf=logging_conf)
@@ -21,8 +22,19 @@ logger = get_logger(logger_conf=logging_conf)
 
 def run(args,
         train_data: np.ndarray,
-        valid_data: np.ndarray,
         model: nn.Module):
+    
+    # augmentation
+    if args.augmentation == 'window':
+        train_data = data_augmentation(train_data, args)
+
+    # split data
+    train_data, valid_data = split_data(data=train_data, ratio=args.ratio)
+    
+    # wandb
+    wandb.init(project="dkt", config=vars(args))
+    wandb.run.name = f"Model:{args.model}"
+    
     train_loader, valid_loader = get_loaders(args=args, train=train_data, valid=valid_data)
 
     # For warmup scheduler which uses step interval
@@ -75,6 +87,79 @@ def run(args,
         # scheduler
         if args.scheduler == "plateau":
             scheduler.step(best_auc)
+            
+def run_kfold(args,
+        train_data: np.ndarray,
+        model: nn.Module):
+    
+    # augmentation
+    if args.augmentation == 'window':
+        train_data = data_augmentation(train_data, args)
+    
+    # k-fold
+    kfold = KFold(n_splits=args.kfold_splits, shuffle=args.shuffle, random_state=args.seed)
+    logger.info(f"K-Fold Split : {args.kfold_splits}")
+    
+    for k, (train_idx, valid_idx) in enumerate(kfold.split(train_data)):
+        # wandb
+        wandb.init(project="dkt", config=vars(args))
+        wandb.run.name = f"Fold:{k + 1}_Model:{args.model}"
+        logger.info(f"-------------- Start Fold : {k + 1} ---------------")
+        
+        train_loader, valid_loader = get_loaders_kfold(args, train_data, train_idx, valid_idx)
+
+        # For warmup scheduler which uses step interval
+        args.total_steps = int(math.ceil(len(train_idx) / args.batch_size)) * (
+            args.n_epochs
+        )
+        args.warmup_steps = args.total_steps // 10
+
+        optimizer = get_optimizer(model=model, args=args)
+        scheduler = get_scheduler(optimizer=optimizer, args=args)
+
+        best_auc = -1
+        early_stopping_counter = 0
+        for epoch in range(args.n_epochs):
+            logger.info("Start Training: Epoch %s", epoch + 1)
+
+            # TRAIN
+            train_auc, train_acc, train_loss = train(train_loader=train_loader,
+                                                    model=model, optimizer=optimizer,
+                                                    scheduler=scheduler, args=args)
+
+            # VALID
+            auc, acc = validate(valid_loader=valid_loader, model=model, args=args)
+
+            wandb.log(dict(epoch=epoch,
+                        train_loss_epoch=train_loss,
+                        train_auc_epoch=train_auc,
+                        train_acc_epoch=train_acc,
+                        valid_auc_epoch=auc,
+                        valid_acc_epoch=acc))
+            
+            if auc > best_auc:
+                best_auc = auc
+                # nn.DataParallel로 감싸진 경우 원래의 model을 가져옵니다.
+                model_to_save = model.module if hasattr(model, "module") else model
+                save_checkpoint(state={"epoch": epoch + 1,
+                                    "state_dict": model_to_save.state_dict()},
+                                model_dir=args.model_dir,
+                                model_filename="best_model.pt")
+                early_stopping_counter = 0
+            else:
+                early_stopping_counter += 1
+                if early_stopping_counter >= args.patience:
+                    logger.info(
+                        "EarlyStopping counter: %s out of %s",
+                        early_stopping_counter, args.patience
+                    )
+                    break
+
+            # scheduler
+            if args.scheduler == "plateau":
+                scheduler.step(best_auc)
+                
+        wandb.finish()
 
 
 def train(train_loader: torch.utils.data.DataLoader,
@@ -98,10 +183,10 @@ def train(train_loader: torch.utils.data.DataLoader,
                       scheduler=scheduler, args=args)
 
         if step % args.log_steps == 0:
-            logger.info("Training steps: %s Loss: %.4f", step, loss.item())
+            logger.info("    Training steps: %s Loss: %.4f", step, loss.item())
 
         # predictions
-        preds = sigmoid(preds[:, -1])
+        preds = torch.sigmoid(preds[:, -1])
         targets = targets[:, -1]
 
         total_preds.append(preds.detach())
@@ -129,7 +214,7 @@ def validate(valid_loader: nn.Module, model: nn.Module, args):
         targets = batch["answerCode"]
 
         # predictions
-        preds = sigmoid(preds[:, -1])
+        preds = torch.sigmoid(preds[:, -1])
         targets = targets[:, -1]
 
         total_preds.append(preds.detach())
@@ -154,11 +239,12 @@ def inference(args, test_data: np.ndarray, model: nn.Module) -> None:
         preds = model(batch) # [건우] '**'를 사용하기 위해 parameter와 argument의 쌍이 같아햐 하는데 lstm에서 paramete는 data하나기 때문에 '**'안씀
 
         # predictions
-        preds = sigmoid(preds[:, -1])
+        preds = torch.sigmoid(preds[:, -1])
         preds = preds.cpu().detach().numpy()
         total_preds += list(preds)
 
-    write_path = os.path.join(args.output_dir, "submission.csv")
+    save_time = get_save_time()
+    write_path = os.path.join(args.output_dir, f"submission_{save_time}_{args.model}.csv")
     os.makedirs(name=args.output_dir, exist_ok=True)
     with open(write_path, "w", encoding="utf8") as w:
         w.write("id,prediction\n")
