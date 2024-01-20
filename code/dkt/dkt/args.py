@@ -85,8 +85,10 @@ def parse_args():
     parser.add_argument(
         "--tgt_col", default=["answerCode"], type=list, help="target feature"
     )
+    parser.add_argument(
+        "--user_col", default=["userID"], type=list, help="target feature"
+    )
     
-
     # 모델
     parser.add_argument(
         "--hidden_dim", default=64, type=int, help="hidden dimension size"
@@ -94,6 +96,11 @@ def parse_args():
     parser.add_argument("--n_layers", default=2, type=int, help="number of layers")
     parser.add_argument("--n_heads", default=2, type=int, help="number of heads")
     parser.add_argument("--drop_out", default=0.2, type=float, help="drop out rate")
+    
+    # Tfixup
+    parser.add_argument("--Tfixup", default=False, type=bool, help="Tfirup layers")
+    parser.add_argument("--Tfix_layer_norm", default=False, type=bool, help="Tfirup layers")
+    parser.add_argument("--Tfix_n_layers", default=20, type=int, help="Tfirup layers")
 
     # 훈련
     parser.add_argument("--n_epochs", default=20, type=int, help="number of epochs")
@@ -107,20 +114,18 @@ def parse_args():
     parser.add_argument("--ratio", default=0.7, type=float, help="data split ratio")
     parser.add_argument("--shuffle", default=True, type=bool, help="data augmentation")
     # data augmentation
-    parser.add_argument("--augmentation", default="window", choices=['', 'window'], type=str, help="data augmentation")
-
-
+    parser.add_argument("--augmentation", default="", choices=['', 'window'], type=str, help="data augmentation")
     parser.add_argument("--stride", default=None, type=int, help="data augmentation")
     parser.add_argument("--shuffle_n", default=3, type=int, help="Mix data randomly and add them as data")
     # K-fold
-    parser.add_argument("--kfold_splits", default=0, type=int, help="apply k-fold if 1 or more (minimum 5)")
+    parser.add_argument("--kfold_splits", default=5, type=int, help="apply k-fold if 1 or more (minimum 5)")
 
     parser.add_argument(
         "--log_steps", default=50, type=int, help="print log per n steps"
     )
 
     ### 중요 ###
-    parser.add_argument("--model", default="lstm", type=str, help="model type")
+    parser.add_argument("--model", default="tfixup", choices=['lstm', 'lstmattn', 'bert', 'saint', 'lastquery, tfixup'],type=str, help="model type")
     parser.add_argument("--optimizer", default="adam", type=str, help="optimizer type")
     parser.add_argument(
         "--scheduler", default="plateau", type=str, help="scheduler type"

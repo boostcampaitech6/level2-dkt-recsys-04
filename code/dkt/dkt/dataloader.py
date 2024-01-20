@@ -41,18 +41,15 @@ class Preprocess:
         # Timestamp는 Feature Engineering 했다고 보고 삭제 조치
         df = df.drop('Timestamp', axis=1)
         
-        setattr(self.args, 'columns', list(df.columns))
-        setattr(self.args, 'y_column', 'answerCode')
-        setattr(self.args, 'excluded_columns', ['userID'])
-        setattr(self.args, 'X_columns', [column for column in self.args.columns if column not in [self.args.y_column] + self.args.excluded_columns])
+        X_columns = [column for column in df.columns if column not in self.args.tgt_col + self.args.user_col]
 
         # 카테고리 feature 지정 : cat_로 시작하는 모든 컬럼
         default_cate_cols = ["assessmentItemID", "testId", "KnowledgeTag"]
-        for col in self.args.X_columns:
+        for col in X_columns:
             if col.startswith('cat_'):
                 default_cate_cols.append(col)
         setattr(self.args, 'cat_cols', default_cate_cols)
-        setattr(self.args, 'con_cols', [col for col in self.args.X_columns if col not in self.args.cat_cols])
+        setattr(self.args, 'con_cols', [col for col in X_columns if col not in self.args.cat_cols])
         
         if not os.path.exists(self.args.asset_dir):
             os.makedirs(self.args.asset_dir)
@@ -113,12 +110,12 @@ class Preprocess:
         for col in self.args.cat_cols:
             setattr(self.args, f'n_{col}', len(np.load(os.path.join(self.args.asset_dir, f'{col}_classes.npy'))))
         
-        columns = self.args.cat_cols + self.args.con_cols + self.args.tgt_col # [건우] 자동화 코드(추가)
+        self.args.columns = self.args.cat_cols + self.args.con_cols + self.args.tgt_col # [건우] 자동화 코드(추가)
         group = (
             df
             .groupby("userID")
             .apply(
-                lambda r: tuple(r[col].values for col in columns) # [건우] 자동화 코드(추가)
+                lambda r: tuple(r[col].values for col in self.args.columns) # [건우] 자동화 코드(추가)
                 )
             )
         
@@ -141,6 +138,7 @@ class DKTDataset(torch.utils.data.Dataset):
         self.data = data
         self.max_seq_len = args.max_seq_len
         self.args = args
+        self.args.columns = self.args.columns + ['mask', 'interaction'] # columns에 mask, interaction 추가
 
     # 주어진 인덱스 index(row)에 해당하는 데이터를 반환하는 메서드
     def __getitem__(self, index: int) -> dict:
