@@ -2,10 +2,9 @@ import torch
 import torch.nn as nn
 from transformers.models.bert.modeling_bert import BertConfig, BertEncoder, BertModel
 import torch.nn.functional as F
-
-import pandas as pd
 import numpy as np
 import math # [승준] positional encoding을 위한 math 패키지, numpy 추가
+import re
 
 class ModelBase(nn.Module):
     def __init__(self, args):
@@ -30,7 +29,7 @@ class ModelBase(nn.Module):
 
         # Embeddings
         # hd: Hidden dimension, intd: Intermediate hidden dimension
-        hd, intd = self.hidden_dim, self.hidden_dim // 3
+        hd, intd = self.hidden_dim, self.hidden_dim // len(self.args.cat_cols)
 
         # [건우] category_feature개수 만큼 nn.Embedding 만듬(interaction만 args에 파싱 후에 만들어졌기 때문에 따로 만듬)
         self.embedding_interaction = nn.Embedding(3, intd) # interaction이란 이전 sequence를 학습하기 위한 column(correct(1(성공), 2(실패)) + padding(0)) 
@@ -91,7 +90,7 @@ class LSTM(ModelBase):
     def forward(self, data):
         # X는 embedding들을 concat한 값
         # super().forward은 부모객체의 forward메소드를 말함
-        X, batch_size, _ = super().forward(data) # [건우] 각각 안 받고 data로 한 번에 받음
+        _, X, batch_size, _ = super().forward(data) # [건우] 각각 안 받고 data로 한 번에 받음
         out, _ = self.lstm(X)
         out = out.contiguous().view(batch_size, -1, self.hidden_dim)
         out = self.fc(out).view(batch_size, -1)
@@ -347,4 +346,145 @@ class Saint(ModelBase):
         out = out.contiguous().view(batch_size, -1, self.hidden_dim)
         out = self.fc(out).view(batch_size, -1)
         
+        return out
+
+class FixupEncoder(ModelBase):
+    def __init__(self, args):
+        super().__init__(args)
+        
+        # Defining some parameters
+        self.Tfixup = self.args.Tfixup
+        self.layer_norm = self.args.Tfix_layer_norm
+        self.n_layers = self.args.Tfix_n_layers
+        
+        # Encoder
+        self.encoders = nn.ModuleList([EncoderLayer(args) for _ in range(self.n_layers)])
+        
+        # T-Fixup
+        if self.args.Tfixup:
+
+            # 초기화 (Initialization)
+            self.tfixup_initialization()
+            print("T-Fixup Initialization Done")
+
+            # 스케일링 (Scaling)
+            self.tfixup_scaling()
+            print(f"T-Fixup Scaling Done")
+
+    def tfixup_initialization(self):
+        # 우리는 padding idx의 경우 모두 0으로 통일한다
+        padding_idx = 0
+
+        for name, param in self.named_parameters():
+            if re.match(r'^embedding*', name):
+                nn.init.normal_(param, mean=0, std=param.shape[1] ** -0.5)
+                nn.init.constant_(param[padding_idx], 0)
+            elif re.match(r'.*ln.*|.*bn.*', name):
+                continue
+            elif re.match(r'.*weight*', name):
+                # nn.init.xavier_uniform_(param)
+                nn.init.xavier_normal_(param)
+
+
+    def tfixup_scaling(self):
+        temp_state_dict = {}
+
+        # 특정 layer들의 값을 스케일링한다
+        for name, param in self.named_parameters():
+
+            # TODO: 모델 내부의 module 이름이 달라지면 직접 수정해서
+            #       module이 scaling 될 수 있도록 변경해주자
+            # print(name)
+
+            if re.match(r'^embedding*', name):
+                temp_state_dict[name] = (9 * self.args.n_layers) ** (-1 / 4) * param          
+            elif re.match(r'encoder.*ffn.*weight$|encoder.*attn.out_proj.weight$', name):
+                temp_state_dict[name] = (0.67 * (self.args.n_layers) ** (-1 / 4)) * param
+            elif re.match(r"encoder.*value.weight$", name):
+                temp_state_dict[name] = (0.67 * (self.args.n_layers) ** (-1 / 4)) * (param * (2**0.5))
+
+        # 나머지 layer는 원래 값 그대로 넣는다
+        for name in self.state_dict():
+            if name not in temp_state_dict:
+                temp_state_dict[name] = self.state_dict()[name]
+
+        self.load_state_dict(temp_state_dict)
+
+    def mask_2d_to_3d(self, mask, batch_size, seq_len):
+        # padding 부분에 1을 주기 위해 0과 1을 뒤집는다
+        mask = torch.ones_like(mask) - mask
+        
+        mask = mask.repeat(1, seq_len)
+        mask = mask.view(batch_size, -1, seq_len)
+        mask = mask.repeat(1, self.args.n_heads, 1)
+        mask = mask.view(batch_size*self.args.n_heads, -1, seq_len)
+
+        return mask.float().masked_fill(mask==1, float('-inf'))
+
+    def forward(self, data):
+        _, X, batch_size, seq_len = super().forward(data)
+        mask = data['mask']
+
+        ### Encoder
+        mask = self.mask_2d_to_3d(mask, batch_size, seq_len).to(self.device)
+        for encoder in self.encoders:
+            X = encoder(X, mask)
+
+        ###################### DNN #####################
+        out = X.contiguous().view(batch_size, -1, self.hidden_dim)
+        out = self.fc(out).view(batch_size, -1)
+        
+        return out
+    
+class EncoderLayer(nn.Module):
+    def __init__(self, args):
+        super(EncoderLayer, self).__init__()
+        self.args = args
+        self.device = args.device
+
+        # Defining some parameters
+        self.hidden_dim = self.args.hidden_dim
+        self.n_layers = self.args.Tfix_n_layers
+        self.layer_norm = self.args.Tfix_layer_norm
+
+        self.query = nn.Linear(in_features=self.hidden_dim, out_features=self.hidden_dim)
+        self.key = nn.Linear(in_features=self.hidden_dim, out_features=self.hidden_dim)
+        self.value = nn.Linear(in_features=self.hidden_dim, out_features=self.hidden_dim)
+
+        self.attn = nn.MultiheadAttention(embed_dim=self.hidden_dim, num_heads=self.args.n_heads)
+
+        self.ffn1 = nn.Linear(in_features=self.hidden_dim, out_features=self.hidden_dim)
+        self.ffn2 = nn.Linear(in_features=self.hidden_dim, out_features=self.hidden_dim)   
+
+        if self.layer_norm:
+            self.ln1 = nn.LayerNorm(self.hidden_dim)
+            self.ln2 = nn.LayerNorm(self.hidden_dim)
+
+
+    def forward(self, embed, mask):
+        q = self.query(embed).permute(1, 0, 2)
+        k = self.key(embed).permute(1, 0, 2)
+        v = self.value(embed).permute(1, 0, 2)
+
+        ## attention
+        out, _ = self.attn(q, k, v, attn_mask=mask)
+        
+        ## residual + layer norm
+        out = out.permute(1, 0, 2)
+        out = embed + out
+        
+        if self.layer_norm:
+            out = self.ln1(out)
+
+        ## feed forward network
+        out = self.ffn1(out)
+        out = F.relu(out)
+        out = self.ffn2(out)
+
+        ## residual + layer norm
+        out = embed + out
+
+        if self.layer_norm:
+            out = self.ln2(out)
+
         return out
