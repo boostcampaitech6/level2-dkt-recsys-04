@@ -1,5 +1,16 @@
 import argparse
 
+# [찬우] str2bool 함수 추가
+def str2bool(v):
+    if isinstance(v, bool):
+        return v
+    if v.lower() in ('yes', 'true', 't', 'y', '1'):
+        return True
+    elif v.lower() in ('no', 'false', 'f', 'n', '0'):
+        return False
+    else:
+        raise argparse.ArgumentTypeError('Boolean value expected.')
+
 
 def parse_args():
     # python script 실행할 때 인자를 수정하여 실행할 수 있다.
@@ -17,7 +28,7 @@ def parse_args():
         "--asset_dir", default="asset/", type=str, help="data directory"
     )
     parser.add_argument(
-        "--file_name", default="train_data_merge.csv", type=str, help="train file name"
+        "--file_name", default="train_data.csv", type=str, help="train file name"
     )
     parser.add_argument(
         "--model_dir", default="models/", type=str, help="model directory"
@@ -37,19 +48,40 @@ def parse_args():
     )
     parser.add_argument("--num_workers", default=1, type=int, help="number of workers")
 
+    '''
+    # [찬우] Data Augumentation 추가
+    parser.add_argument(
+        "--window", default=False, type=str2bool, help="window usage status"
+    )
+    parser.add_argument(
+        "--stride", default=None, type=int, help="stride"
+    )
+    parser.add_argument(
+        "--shuffle", default=False, type=str2bool, help="shuffle usage status"
+    )
+    parser.add_argument(
+        "--shuffle_n", default=2, type=int, help="shuffle"
+    )
+    '''
+
     # [건우] feature 분류모음(자동화 위해 추가)
-    # parser.add_argument(
-    #     "--cat_cols",
-    #     default=["testId", "assessmentItemID", "KnowledgeTag","paper_number"], # "userID"로 묶을 것이기 때문에 "userID"는 제외
-    #     type=list,
-    #     help="categorical features",
-    # )
-    # parser.add_argument(
-    #     "--con_cols",
-    #     default=["elapsed", "KnowledgeTag_percent", "cumulative"],
-    #     type=list,
-    #     help="numerical features",
-    # )
+    '''
+    parser.add_argument(
+        "--cat_cols",
+        #default=["testId", "assessmentItemID", "KnowledgeTag","paper_number"], # "userID"로 묶을 것이기 때문에 "userID"는 제외
+        default=["assessmentItemID", "testId",
+                 "KnowledgeTag"],
+        type=list,
+        help="categorical features",
+    )
+    parser.add_argument(
+        "--con_cols",
+        #default=["elapsed", "KnowledgeTag_percent", "cumulative"],
+        default=["elapsed"],
+        type=list,
+        help="numerical features",
+    )
+    '''
     parser.add_argument(
         "--tgt_col", default=["answerCode"], type=list, help="target feature"
     )
@@ -76,7 +108,9 @@ def parse_args():
     parser.add_argument("--shuffle", default=True, type=bool, help="data augmentation")
     # data augmentation
     parser.add_argument("--augmentation", default="window", choices=['', 'window'], type=str, help="data augmentation")
-    parser.add_argument("--stride", default=parser.parse_args().max_seq_len, type=int, help="data augmentation")
+
+
+    parser.add_argument("--stride", default=None, type=int, help="data augmentation")
     parser.add_argument("--shuffle_n", default=3, type=int, help="Mix data randomly and add them as data")
     # K-fold
     parser.add_argument("--kfold_splits", default=0, type=int, help="apply k-fold if 1 or more (minimum 5)")
