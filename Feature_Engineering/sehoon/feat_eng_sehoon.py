@@ -4,26 +4,13 @@ from sklearn.decomposition import PCA
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis as LDA
 
 # Feature Engineering
-def feat_testid_substr(df : pd.DataFrame) -> pd.DataFrame:
-    df = df.copy()
-    df['testid_substr'] = df['testId'].apply(lambda x: x[:3] + x[-4:])
-    return df
-
-# mean, median, std
-def feat_user_correct_stats(df : pd.DataFrame, static : str) -> pd.DataFrame:
-    df = df.copy()
-    col_name = 'user_answer_' + static
-    ass_cor_accuracy = df.groupby('userID')['answerCode'].agg([static])
-    df[col_name] = df['userID'].map(ass_cor_accuracy[static])
-    
-    return df
 
 ## 수치형 Feature 만들기
 #### 1. 사용자별 정답에 대한 평균/중간값/표준편차 등
 # mean, median, std
 def feat_user_correct_stats(df : pd.DataFrame, static : str) -> pd.DataFrame:
     df = df.copy()
-    col_name = 'user_answer_' + static
+    col_name = 'cat_' + 'user_answer_' + static
     ass_cor_accuracy = df.groupby('userID')['answerCode'].agg([static])
     df[col_name] = df['userID'].map(ass_cor_accuracy[static])
     
@@ -43,7 +30,7 @@ def feat_ass_correct_stats(df : pd.DataFrame, static : str) -> pd.DataFrame:
 # mean, median, std
 def feat_testid_correct_stats(df : pd.DataFrame, static : str) -> pd.DataFrame:
     df = df.copy()
-    col_name = 'testid_answer_' + static
+    col_name = 'cat_' + 'testid_answer_' + static
     ass_cor_accuracy = df.groupby('testId')['answerCode'].agg([static])
     df[col_name] = df['testId'].map(ass_cor_accuracy[static])
     
@@ -53,7 +40,7 @@ def feat_testid_correct_stats(df : pd.DataFrame, static : str) -> pd.DataFrame:
 # mean, median, std
 def feat_tag_correct_stats(df : pd.DataFrame, static : str) -> pd.DataFrame:
     df = df.copy()
-    col_name = 'tag_answer_' + static
+    col_name = 'cat_' + 'tag_answer_' + static
     ass_cor_accuracy = df.groupby('KnowledgeTag')['answerCode'].agg([static])
     df[col_name] = df['KnowledgeTag'].map(ass_cor_accuracy[static])
 
@@ -209,7 +196,7 @@ def feat_elapsed_type_stats(df : pd.DataFrame, static : str) -> pd.DataFrame:
         elif time_hour >= 0 :
             return 1
 
-    col_name = 'elapsed_type_' + static
+    col_name = 'cat_' + 'elapsed_type_' + static
     df['elapsed_type'] = df['Timestamp'].apply(AnswerTimeType)
     elapsed_type = df.groupby('elapsed_type')['answerCode'].agg([static])
     df[col_name] = df['elapsed_type'].map(elapsed_type[static])
@@ -245,7 +232,7 @@ def feat_elapsed_pca(df : pd.DataFrame) -> pd.DataFrame:
     df = feat_elapsed_type_stats(df, 'mean')
     df = feat_relative_elapsed_time(df)
 
-    X = df[['elapsed', 'elapsed_cumsum', 'normalized_elapsed', 'elapsed_type_mean', 'relative_elapsed']]
+    X = df[['elapsed', 'elapsed_cumsum', 'normalized_elapsed', 'relative_elapsed']]
 
     pca = PCA(n_components=1)
     df['elapsed_pca'] = pca.fit_transform(X)
@@ -262,7 +249,7 @@ def feat_elapsed_lda(df : pd.DataFrame) -> pd.DataFrame:
     df = feat_elapsed_type_stats(df, 'mean')
     df = feat_relative_elapsed_time(df)
 
-    X = df[['elapsed', 'elapsed_cumsum', 'normalized_elapsed', 'elapsed_type_mean', 'relative_elapsed']]
+    X = df[['elapsed', 'elapsed_cumsum', 'normalized_elapsed', 'relative_elapsed']]
     y = df['answerCode']
 
     lda = LDA(n_components=1)
