@@ -1,0 +1,32 @@
+2024-01-18 08:27:08,418 - root - INFO - Start Training: Epoch 1
+2024-01-18 08:27:09,023 - root - INFO -     Training steps: 0 Loss: 0.7106
+2024-01-18 08:27:11,569 - root - INFO -     Training steps: 50 Loss: 0.6655
+2024-01-18 08:27:14,398 - root - INFO -     Training steps: 100 Loss: 0.6322
+2024-01-18 08:27:16,932 - root - INFO -     Training steps: 150 Loss: 0.6444
+2024-01-18 08:27:20,009 - root - INFO -     Training steps: 200 Loss: 0.6318
+2024-01-18 08:27:22,987 - root - INFO -     Training steps: 250 Loss: 0.6331
+2024-01-18 08:27:25,306 - root - INFO -     Training steps: 300 Loss: 0.6037
+2024-01-18 08:27:29,017 - root - INFO -     Training steps: 350 Loss: 0.5590
+2024-01-18 08:27:31,983 - root - INFO -     Training steps: 400 Loss: 0.5622
+2024-01-18 08:27:33,874 - root - INFO -     Training steps: 450 Loss: 0.6470
+2024-01-18 08:27:36,923 - root - INFO -     Training steps: 500 Loss: 0.5101
+2024-01-18 08:27:40,510 - root - INFO -     Training steps: 550 Loss: 0.6527
+2024-01-18 08:27:42,479 - root - INFO -     Training steps: 600 Loss: 0.4810
+2024-01-18 08:27:45,580 - root - INFO -     Training steps: 650 Loss: 0.6000
+2024-01-18 08:27:49,056 - root - INFO -     Training steps: 700 Loss: 0.6757
+2024-01-18 08:27:51,218 - root - INFO -     Training steps: 750 Loss: 0.5640
+2024-01-18 08:27:54,126 - root - INFO -     Training steps: 800 Loss: 0.6264
+Traceback (most recent call last):
+  File "train.py", line 47, in <module>
+    main(args) # main함수 실행 -> 학습!!!!!!!!!!!
+  File "train.py", line 37, in main
+    trainer.run(args=args, train_data=train_data, model=model)
+  File "/opt/ml/code2/level2-dkt-recsys-04/code/dkt/dkt/trainer.py", line 58, in run
+    train_auc, train_acc, train_loss = train(train_loader=train_loader,
+  File "/opt/ml/code2/level2-dkt-recsys-04/code/dkt/dkt/trainer.py", line 185, in train
+    update_params(loss=loss, model=model, optimizer=optimizer,
+  File "/opt/ml/code2/level2-dkt-recsys-04/code/dkt/dkt/trainer.py", line 300, in update_params
+    nn.utils.clip_grad_norm_(model.parameters(), args.clip_grad)
+  File "/opt/ml/miniconda3/envs/dkt/lib/python3.8/site-packages/torch/nn/utils/clip_grad.py", line 76, in clip_grad_norm_
+    torch._foreach_mul_(grads, clip_coef_clamped.to(device))  # type: ignore[call-overload]
+KeyboardInterrupt

@@ -1,0 +1,16 @@
+2024-01-16 17:44:42,849 - root - INFO - Building Model ...
+2024-01-16 17:44:42,850 - root - WARNING - Error while loading lastquery with args: Namespace(asset_dir='asset/', batch_size=64, cat_cols=['testId', 'assessmentItemID', 'KnowledgeTag', 'paper_number'], clip_grad=10, con_cols=['elapsed', 'KnowledgeTag_percent', 'cumulative'], data_dir='/opt/ml/input/data/', device='cpu', drop_out=0.2, file_name='train_data.csv', hidden_dim=64, log_steps=50, lr=0.0001, max_seq_len=20, model='lastquery', model_dir='models/', model_name='best_model.pt', n_KnowledgeTag=913, n_assessmentItemID=9455, n_epochs=20, n_heads=2, n_layers=2, n_paper_number=14, n_testId=1538, num_workers=1, optimizer='adam', output_dir='outputs/', patience=5, scheduler='plateau', seed=42, test_file_name='test_data.csv', tgt_col=['answerCode'])
+Traceback (most recent call last):
+  File "train.py", line 43, in <module>
+    main(args) # main함수 실행 -> 학습!!!!!!!!!!!
+  File "train.py", line 32, in main
+    model: torch.nn.Module = trainer.get_model(args=args).to(args.device)
+  File "/opt/ml/code2/level2-dkt-recsys-04/code/dkt/dkt/trainer.py", line 185, in get_model
+    raise e
+  File "/opt/ml/code2/level2-dkt-recsys-04/code/dkt/dkt/trainer.py", line 175, in get_model
+    model = { # get은 사용자 입력
+  File "/opt/ml/code2/level2-dkt-recsys-04/code/dkt/dkt/model.py", line 168, in __init__
+    super().__init__(args)
+  File "/opt/ml/miniconda3/envs/dkt/lib/python3.8/site-packages/torch/nn/modules/module.py", line 464, in __init__
+    raise TypeError(f"{type(self).__name__}.__init__() takes 1 positional argument but {len(args) + 1} were"
+TypeError: LastQuery.__init__() takes 1 positional argument but 2 were given
