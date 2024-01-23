@@ -92,20 +92,34 @@ class CatBoost():
         return self.model.predict(X_valid)
     
 class LGBM():
-    def __init__(self, args, data):
+    def __init__(self, args):
         self.args = args
-        self.lgb_train = lgb.Dataset(data['X_train'], data['y_train'])
-        self.lgb_test = lgb.Dataset(data['X_valid'], data['y_valid'])
+        self.parameter = {
+                          'max_depth': self.args.max_depth,
+                          'min_data_in_leaf': self.args.min_data_in_leaf,
+                          'feature_fraction': self.args.feature_fraction,
+                          'lambda': self.args._lambda,
+                          'learning_rate': self.args.lr,
+                          'boosting_type': 'gbdt',
+                          'objective': 'binary',
+                          'metric': ['auc', 'binary_logloss'],
+                          'force_row_wise': True,
+                          'verbose': 1,
+                         }
         
-    def fit(self, X_train, y_train):
+    def fit(self, train_data):
+        self.lgb_train = lgb.Dataset(train_data['X_train'], train_data['y_train'])
+        self.lgb_valid = lgb.Dataset(train_data['X_valid'], train_data['y_valid'])
         self.model = lgb.train(
-                               {'objective': 'binary'},
+                               self.parameter,
                                self.lgb_train,
-                               valid_sets=[self.lgb_train, self.lgb_test],
-                               num_boost_round=500
+                               valid_sets=[self.lgb_train, self.lgb_valid],
+                               num_boost_round=self.args.n_estimators,
                               )
-        
         return self.model
     
     def predict(self, X_valid):
         return self.model.predict(X_valid)
+    
+    def save_model(self, file_name):
+        self.model.save_model(file_name)
