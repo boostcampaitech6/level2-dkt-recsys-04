@@ -1,5 +1,8 @@
  lightgcn의 결과를 dkt에 옮기는 과정입니다.
 
+최종으로 예측되는 output결과는 다음 그림과 같습니다.
+
+![lightgcn_to_other](https://github.com/boostcampaitech6/level2-dkt-recsys-04/assets/68991530/f7197e98-9c0a-4caf-9eda-642cd1597b07)
 
  사용방법
  - python train.py
