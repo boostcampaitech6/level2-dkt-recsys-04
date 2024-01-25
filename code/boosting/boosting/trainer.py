@@ -1,6 +1,7 @@
 import os
 import wandb
 import numpy as np
+import pickle
 
 from .metric import get_metric
 from .model import *
@@ -26,34 +27,6 @@ def train(args, train_data, model):
                        valid_acc_epoch=acc))
     
     logger.info("Valid AUC : %.4f ACC : %.4f", auc, acc)
-    
-def kfold_train(args, train_data_list: list, model):
-    
-    auc_list = []
-    acc_list = []
-    for fold, train_data in enumerate(train_data_list):
-        if args.model.lower() == 'lgbm':
-            result = model.fit(train_data)
-        else:
-            result = model.fit(train_data['X_train'], train_data['y_train'])
-        
-        # Train AUC / ACC
-        predict = result.predict(train_data['X_valid'])
-        auc, acc = get_metric(train_data['y_valid'], predict)
-        auc_list.append(auc)
-        acc_list.append(acc)
-        
-        # wandb.log(dict(epoch=args.num_boost_round,
-        #             valid_auc_epoch=auc,
-        #             valid_acc_epoch=acc))
-        
-        # 모델 저장
-        os.makedirs(name=args.model_dir, exist_ok=True)
-        model.save_model(f'{args.model_dir}{args.model}_{fold + 1}.txt')
-        
-        logger.info(f"  Fold {fold + 1} > Valid AUC : %.4f ACC : %.4f", auc, acc)
-    
-    logger.info(f"  Fold Average{fold + 1} > Valid AUC : %.4f ACC : %.4f", np.mean(auc_list), np.mean(acc_list))
 
 def inference(args, test_data, model) -> None:
 
@@ -70,14 +43,41 @@ def inference(args, test_data, model) -> None:
             w.write("{},{}\n".format(id, p))
     logger.info("Successfully saved submission as %s", write_path)
 
-def kfold_inference(args, test_data, model):
+def kfold_train(args, train_data_list: list, model):
+    
+    auc_list = []
+    acc_list = []
+    for fold, train_data in enumerate(train_data_list):
+        if args.model.lower() == 'lgbm':
+            result = model.fit(train_data)
+        else:
+            result = model.fit(train_data['X_train'], train_data['y_train'])
+        
+        # Train AUC / ACC
+        predict = result.predict(train_data['X_valid'])
+        auc, acc = get_metric(train_data['y_valid'], predict)
+        auc_list.append(auc)
+        acc_list.append(acc)
+        
+        wandb.log(dict(epoch=args.n_estimators,
+                    valid_auc_epoch=auc,
+                    valid_acc_epoch=acc))
+        
+        # 모델 저장
+        os.makedirs(name=args.model_dir, exist_ok=True)
+        pickle.dump(result, open(f'{args.model_dir}{args.model}_{fold + 1}.pkl', 'wb'))
+        
+        logger.info(f"  Fold {fold + 1} > Valid AUC : %.4f ACC : %.4f", auc, acc)
+    
+    logger.info(f"  Fold Average{fold + 1} > Valid AUC : %.4f ACC : %.4f", np.mean(auc_list), np.mean(acc_list))
+
+def kfold_inference(args, test_data):
     
     predict = np.zeros((test_data.shape[0],))
     for fold in range(args.n_fold):
         
         # 모델 불러오기
-        if args.model.lower() == 'lgbm':
-            model = lgb.Booster(model_file=f'{args.model_dir}{args.model}_{fold + 1}.txt')
+        model = pickle.load(open(f'{args.model_dir}{args.model}_{fold + 1}.pkl', 'rb'))
             
         current_pred = model.predict(test_data[args.X_columns])
         predict += current_pred

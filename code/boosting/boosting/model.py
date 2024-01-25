@@ -12,7 +12,7 @@ class AdaBoost():
         self.model = AdaBoostClassifier(
                                         estimator=None,
                                         n_estimators=self.args.n_estimators,
-                                        learning_rate=self.args.lr_AdaBoost,
+                                        learning_rate=self.args.lr,
                                         algorithm='SAMME.R',
                                         random_state=args.data_shuffle,
                                         base_estimator='deprecated'
@@ -62,7 +62,7 @@ class XGBoost():
         self.model = XGBClassifier(
                                    n_estimators=self.args.n_estimators,
                                    random_state=np.random.seed(self.args.seed),
-                                   max_depth=self.args.max_depth,
+                                   max_depth=self.args.max_depth_xgb,
                                    colsample_bylevel=self.args.colsample_bylevel,
                                    colsample_bytree=self.args.colsample_bytree,
                                    gamma=self.args.gamma,
@@ -95,7 +95,7 @@ class LGBM():
     def __init__(self, args):
         self.args = args
         self.parameter = {
-                          'max_depth': self.args.max_depth,
+                          'max_depth': self.args.max_depth_lgbm,
                           'min_data_in_leaf': self.args.min_data_in_leaf,
                           'feature_fraction': self.args.feature_fraction,
                           'lambda': self.args._lambda,
@@ -120,6 +120,3 @@ class LGBM():
     
     def predict(self, X_valid):
         return self.model.predict(X_valid)
-    
-    def save_model(self, file_name):
-        self.model.save_model(file_name)
