@@ -3,7 +3,7 @@
 # 목차
 ### [Team](#Team)
 ### [Skill](#Skill)
-### [Project Overview](#Project<br> Overview)
+### [Project Overview](#Project&nbsp;Overview)
 ### [Project Structure](#Project Structure)
   ##### [1. Data](1. Data)
 
