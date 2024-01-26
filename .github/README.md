@@ -9,16 +9,17 @@
 </p>
 
 ## 기술 스택
-> Language<br>
+> **Language**<br>
 
 ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)<br>
-## Library<br>
+> **Library**<br>
 ![PyTorch](https://img.shields.io/badge/PyTorch-%23EE4C2C.svg?style=for-the-badge&logo=PyTorch&logoColor=white)
 ![Pandas](https://img.shields.io/badge/pandas-%23150458.svg?style=for-the-badge&logo=pandas&logoColor=white)
 ![NumPy](https://img.shields.io/badge/numpy-%23013243.svg?style=for-the-badge&logo=numpy&logoColor=white)
 ![Matplotlib](https://img.shields.io/badge/Matplotlib-%23ff0000.svg?style=for-the-badge&logo=Matplotlib&logoColor=black)<br>
-## Communication<br>
+> **Communication**<br>
 ![Git](https://img.shields.io/badge/git-%23F05033.svg?style=for-the-badge&logo=git&logoColor=white)
+
 ## 프로젝트 소개
 
 DKT는 학생들의 지식 상태를 추적하고 이해도를 측정하는 딥러닝 기반의 방법론으로, 개별 학생들에게 맞춤형 피드백을 제공하고 향후 문제 해결 능력을 예측하는 데 사용됩니다.
