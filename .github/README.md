@@ -45,9 +45,9 @@
 
 1. Data
 
-### Model
+2. Model
 
-### score
+### Performance
 
 ### 기능 4
 
