@@ -1,5 +1,5 @@
-![header](https://capsule-render.vercel.app/api?type=rect&color=6FC7E1&height=200&section=header&text=Deep&nbsp;Knowledge&nbsp;Tracing(DKT)&%20render&fontSize=50)
-![header](https://capsule-render.vercel.app/api?type=wave&color=auto&height=300&section=header&text=capsule%20render&fontSize=90)
+![header](https://capsule-render.vercel.app/api?type=rect&color=#0000FF&height=200&section=header&text=Deep&nbsp;Knowledge&nbsp;Tracing(DKT)&%20render&fontSize=50)
+
 
 
 ![image](https://github.com/boostcampaitech6/level2-dkt-recsys-04/assets/83867930/aa1ecc6e-8526-4729-a337-81762d4d7c76)
