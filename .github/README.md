@@ -3,7 +3,7 @@
 # 목차
 ### [Team](#Team)
 ### [Skill](#Skill)
-### [Project Overview](#Project Overview)
+### [Project Overview](#Project```Overview)
 ### [Project Structure](#Project Structure)
   ##### [1. Data](1. Data)
 
@@ -47,10 +47,11 @@
 # Project Structure
 <구조도 사진>
 ### 일정
-### 1. Data
-### 2. Model
-### 3. Ensemble
-### 3. Performance
+### 1. Environment
+### 2. Data
+### 3. Model
+### 4. Ensemble
+### 5. Performance
 
 
 # 배운 점 & 아쉬운 점
