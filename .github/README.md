@@ -3,7 +3,7 @@
 # 목차
 ### [Team](#Team)
 ### [Skill](#Skill)
-### [Project Overview](#Project```Overview)
+### [Project Overview](#Project Overview)
 ### [Project Structure](#Project Structure)
   ##### [1. Data](1. Data)
 
@@ -37,7 +37,7 @@
   ![Anaconda](https://img.shields.io/badge/Anaconda-44A833.svg?style=for-the-badge&logo=Anaconda&logoColor=white)
 
 
-# Project```Overview
+# Project Overview
 
 ### 딥러닝 기반의 방법론으로 학생들의 지식 상태를 추적하고 이해도를 측정 -> 마지막 문제를 맞출지 예측
  
