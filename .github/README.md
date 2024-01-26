@@ -40,23 +40,18 @@
 
 
 # 프로젝트 구조
-### 1. 첫 번째 항목
+<구조도 사진>
+### 1. Data
 ### 2. Model
+### 3. Ensemble
 ### 3. Performance
 
-### 기능 4
 
-<br>
+# 배운 점 & 아쉬운 점
+### 배운점
+### 아쉬운점
 
-## 배운 점 & 아쉬운 점
-
-<p align="justify">
-
-</p>
-
-<br>
-
-
+# Laboratory Report
 
 
 ---
