@@ -1,5 +1,6 @@
-# Deep Knowledge Tracing(DKT)
+# <center>Deep Knowledge Tracing(DKT)</center>
 ![image](https://github.com/boostcampaitech6/level2-dkt-recsys-04/assets/83867930/aa1ecc6e-8526-4729-a337-81762d4d7c76)
+![image2](https://github.com/boostcampaitech6/level2-dkt-recsys-04/assets/83867930/41b0381c-43b4-4452-81b1-441a1b073d44)
 
 <p align="center">
   <br>
