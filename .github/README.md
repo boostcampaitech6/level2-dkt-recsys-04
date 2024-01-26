@@ -1,16 +1,12 @@
 ![header](https://capsule-render.vercel.app/api?type=rect&color=0080ff&height=180&section=header&text=Deep&nbsp;Knowledge&nbsp;Tracing(DKT)&%20render&fontSize=50&fontColor=FFFFFF)
 
-
 # 목차
 
-
-# 프로젝트 개요
-
-### 딥러닝 기반의 방법론으로 학생들의 지식 상태를 추적하고 이해도를 측정 -> 마지막 문제를 맞출지 예측
- 
-
-![image2](https://github.com/boostcampaitech6/level2-dkt-recsys-04/assets/83867930/41b0381c-43b4-4452-81b1-441a1b073d44)
-
+# 팀
+| **김세훈** | **문찬우** | **김시윤** | **배건우** | **이승준** |
+| :------: |  :------: | :------: | :------: | :------: |
+| [<img src="https://avatars.githubusercontent.com/u/8871767?v=4" height=150 width=150> <br/> @warpfence](https://github.com/warpfence) | [<img src="https://avatars.githubusercontent.com/u/95879995?v=4" height=150 width=150> <br/> @chanwoomoon](https://github.com/chanwoomoon) | [<img src="https://avatars.githubusercontent.com/u/68991530?v=4" height=150 width=150> <br/> @tldbs5026](https://github.com/tldbs5026) | [<img src="https://avatars.githubusercontent.com/u/83867930?v=4" height=150 width=150> <br/> @gunwoof](https://github.com/gunwoof) | [<img src="https://avatars.githubusercontent.com/u/133944361?v=4" height=150 width=150> <br/> @llseungjun](https://github.com/llseungjun) |
+|  |  |  |  |  |
 
 # 기술 스택
 ### Language
@@ -35,35 +31,23 @@
   ![Ubuntu](https://img.shields.io/badge/Ubuntu-E95420?style=for-the-badge&logo=ubuntu&logoColor=white)
   ![Anaconda](https://img.shields.io/badge/Anaconda-44A833.svg?style=for-the-badge&logo=Anaconda&logoColor=white)
 
-# 팀
-| **김세훈** | **문찬우** | **김시윤** | **배건우** | **이승준** |
-| :------: |  :------: | :------: | :------: | :------: |
-| [<img src="https://avatars.githubusercontent.com/u/8871767?v=4" height=150 width=150> <br/> @warpfence](https://github.com/warpfence) | [<img src="https://avatars.githubusercontent.com/u/95879995?v=4" height=150 width=150> <br/> @chanwoomoon](https://github.com/chanwoomoon) | [<img src="https://avatars.githubusercontent.com/u/68991530?v=4" height=150 width=150> <br/> @tldbs5026](https://github.com/tldbs5026) | [<img src="https://avatars.githubusercontent.com/u/83867930?v=4" height=150 width=150> <br/> @gunwoof](https://github.com/gunwoof) | [<img src="https://avatars.githubusercontent.com/u/133944361?v=4" height=150 width=150> <br/> @llseungjun](https://github.com/llseungjun) |
-|  |  |  |  |  |
+
+# 프로젝트 개요
+
+### 딥러닝 기반의 방법론으로 학생들의 지식 상태를 추적하고 이해도를 측정 -> 마지막 문제를 맞출지 예측
+ 
+![image2](https://github.com/boostcampaitech6/level2-dkt-recsys-04/assets/83867930/41b0381c-43b4-4452-81b1-441a1b073d44)
 
 
+# 프로젝트 구조
 
-<p align="justify">
-프로젝트 개요/동기
-</p>
+<구조도 사진>
 
-<p align="center">
-GIF Images
-</p>
+1. Data
 
-<br>
+### Model
 
-
-
-<br>
-
-## 구현 기능
-
-### 기능 1
-
-### 기능 2
-
-### 기능 3
+### score
 
 ### 기능 4
 
