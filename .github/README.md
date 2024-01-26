@@ -48,7 +48,7 @@ DKT는 학생들의 지식 상태를 추적하고 이해도를 측정하는 딥�
 # 팀
 | **김세훈** | **문찬우** | **김시윤** | **배건우** | **이승준** |
 | :------: |  :------: | :------: | :------: | :------: |
-| [<img src="https://avatars.githubusercontent.com/u/133944361?v=4" height=150 width=150> <br/> @warpfence](https://github.com/warpfence) | [<img src="https://avatars.githubusercontent.com/u/133944361?v=4" height=150 width=150> <br/> @llseungjun](https://github.com/llseungjun) | [<img src="https://avatars.githubusercontent.com/u/133944361?v=4" height=150 width=150> <br/> @llseungjun](https://github.com/llseungjun) | [<img src="https://avatars.githubusercontent.com/u/83867930?v=4" height=150 width=150> <br/> @gunwoof](https://github.com/gunwoof) | [<img src="https://avatars.githubusercontent.com/u/133944361?v=4" height=150 width=150> <br/> @llseungjun](https://github.com/llseungjun) |
+| [<img src="https://avatars.githubusercontent.com/u/133944361?v=4" height=150 width=150> <br/> @warpfence](https://github.com/warpfence) | [<img src="https://avatars.githubusercontent.com/u/133944361?v=4" height=150 width=150> <br/> @chanwoomoon](https://github.com/chanwoomoon) | [<img src="https://avatars.githubusercontent.com/u/133944361?v=4" height=150 width=150> <br/> @tldbs5026](https://github.com/tldbs5026) | [<img src="https://avatars.githubusercontent.com/u/83867930?v=4" height=150 width=150> <br/> @gunwoof](https://github.com/gunwoof) | [<img src="https://avatars.githubusercontent.com/u/133944361?v=4" height=150 width=150> <br/> @llseungjun](https://github.com/llseungjun) |
 |  |  |  |  |  |
 
 
