@@ -19,7 +19,7 @@ DKT는 학생들의 지식 상태를 추적하고 이해도를 측정하는 딥�
 
 
 # 기술 스택
-* Language<br>
+* **Language**<br>
 
 ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
 
