@@ -8,7 +8,7 @@
   <br>
 </p>
 
-## 프로젝트 소개
+# 프로젝트 소개
 
 DKT는 학생들의 지식 상태를 추적하고 이해도를 측정하는 딥러닝 기반의 방법론으로, 개별 학생들에게 맞춤형 피드백을 제공하고 향후 문제 해결 능력을 예측하는 데 사용됩니다.
 
@@ -18,7 +18,7 @@ DKT는 학생들의 지식 상태를 추적하고 이해도를 측정하는 딥�
 ![image2](https://github.com/boostcampaitech6/level2-dkt-recsys-04/assets/83867930/41b0381c-43b4-4452-81b1-441a1b073d44)
 
 
-## 기술 스택
+# 기술 스택
 > **Language**<br>
 
 ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
@@ -45,7 +45,11 @@ DKT는 학생들의 지식 상태를 추적하고 이해도를 측정하는 딥�
 ![Ubuntu](https://img.shields.io/badge/Ubuntu-E95420?style=for-the-badge&logo=ubuntu&logoColor=white)
 ![Anaconda](https://img.shields.io/badge/Anaconda-44A833.svg?style=for-the-badge&logo=Anaconda&logoColor=white)
 
-
+# 팀
+| **이원희** | **허 욱** | **이승준** | **곽윤석** | **배건우** |
+| :------: |  :------: | :------: | :------: | :------: |
+| [<img src="https://avatars.githubusercontent.com/u/64073392?v=4" height=150 width=150> <br/> @lostdesire](https://github.com/lostdesire) | [<img src="https://avatars.githubusercontent.com/u/61164286?v=4" height=150 width=150> <br/> @wooksbaby](https://github.com/wooksbaby) | [<img src="https://avatars.githubusercontent.com/u/133944361?v=4" height=150 width=150> <br/> @llseungjun](https://github.com/llseungjun) | [<img src="https://avatars.githubusercontent.com/u/149780979?v=4" height=150 width=150> <br/> @younne123](https://github.com/younne123) | [<img src="https://avatars.githubusercontent.com/u/83867930?v=4" height=150 width=150> <br/> @gunwoof](https://github.com/gunwoof) |
+| EDA <br> category 전처리 <br> CatBoost 모델 설계 & 튜닝 | EDA <br> book ISBN 전처리 <br> 모델 튜닝 | EDA <br> book language 전처리 <br> CNN_FM 하이퍼파라미터 튜닝 | EDA <br> User data 전처리 <br> 모델 일반화 작업 | EDA <br> LightGbm 모델 설계 & 튜닝 |
 
 
 
