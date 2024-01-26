@@ -21,7 +21,8 @@
 ![Matplotlib](https://img.shields.io/badge/Matplotlib-%23ff0000.svg?style=for-the-badge&logo=Matplotlib&logoColor=black)
 사이킷
 완디비
-("https://img.shields.io/badge/anaconda-44A833?style=for-the-badge&logo=&logoColor=white")
+![Anaconda]("https://img.shields.io/badge/anaconda-44A833?style=for-the-badge&logo=anaconda&logoColor=white")
+"https://img.shields.io/badge/표시할이름-색상?style=for-the-badge&logo=기술스택아이콘&logoColor=white"
 > **Communication**<br>
 
 ![Git](https://img.shields.io/badge/git-%23F05033.svg?style=for-the-badge&logo=git&logoColor=white)
