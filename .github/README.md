@@ -46,10 +46,10 @@ DKT는 학생들의 지식 상태를 추적하고 이해도를 측정하는 딥�
 ![Anaconda](https://img.shields.io/badge/Anaconda-44A833.svg?style=for-the-badge&logo=Anaconda&logoColor=white)
 
 # 팀
-| **이원희** | **허 욱** | **이승준** | **곽윤석** | **배건우** |
+| **김세훈** | **문찬우** | **김시윤** | **배건우** | **이승준** |
 | :------: |  :------: | :------: | :------: | :------: |
-| [<img src="https://avatars.githubusercontent.com/u/64073392?v=4" height=150 width=150> <br/> @lostdesire](https://github.com/lostdesire) | [<img src="https://avatars.githubusercontent.com/u/61164286?v=4" height=150 width=150> <br/> @wooksbaby](https://github.com/wooksbaby) | [<img src="https://avatars.githubusercontent.com/u/133944361?v=4" height=150 width=150> <br/> @llseungjun](https://github.com/llseungjun) | [<img src="https://avatars.githubusercontent.com/u/149780979?v=4" height=150 width=150> <br/> @younne123](https://github.com/younne123) | [<img src="https://avatars.githubusercontent.com/u/83867930?v=4" height=150 width=150> <br/> @gunwoof](https://github.com/gunwoof) |
-| EDA <br> category 전처리 <br> CatBoost 모델 설계 & 튜닝 | EDA <br> book ISBN 전처리 <br> 모델 튜닝 | EDA <br> book language 전처리 <br> CNN_FM 하이퍼파라미터 튜닝 | EDA <br> User data 전처리 <br> 모델 일반화 작업 | EDA <br> LightGbm 모델 설계 & 튜닝 |
+|  |  |  | [<img src="https://avatars.githubusercontent.com/u/83867930?v=4" height=150 width=150> <br/> @gunwoof](https://github.com/gunwoof) | [<img src="https://avatars.githubusercontent.com/u/133944361?v=4" height=150 width=150> <br/> @llseungjun](https://github.com/llseungjun) |
+|  |  |  |  |  |
 
 
 
