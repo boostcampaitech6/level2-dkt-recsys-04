@@ -1,4 +1,4 @@
-![header](https://capsule-render.vercel.app/api?type=rect&color=0080ff&height=180&section=header&text=Deep&nbsp;Knowledge&nbsp;Tracing(DKT)  ㄹㄹ&%20render&fontSize=50&fontColor=FFFFFF)
+![header](https://capsule-render.vercel.app/api?type=rect&color=0080ff&height=180&section=header&text=Deep&nbsp;Knowledge&nbsp;Tracing(DKT) ㄹ&%20render&fontSize=50&fontColor=FFFFFF)
 
 
 
