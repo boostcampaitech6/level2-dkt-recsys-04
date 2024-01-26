@@ -8,12 +8,22 @@
   <br>
 </p>
 
+## 프로젝트 소개
+
+DKT는 학생들의 지식 상태를 추적하고 이해도를 측정하는 딥러닝 기반의 방법론으로, 개별 학생들에게 맞춤형 피드백을 제공하고 향후 문제 해결 능력을 예측하는 데 사용됩니다.
+
+이 프로젝트의 목적은 각 학생의 수학 이해도와 약한 부분을 파악하여 개인별로 적합한 문제를 추천함으로써, 보다 효율적인 학습 방향을 제시하는 것입니다.
+
+![image](https://github.com/boostcampaitech6/level2-dkt-recsys-04/assets/83867930/aa1ecc6e-8526-4729-a337-81762d4d7c76)
+![image2](https://github.com/boostcampaitech6/level2-dkt-recsys-04/assets/83867930/41b0381c-43b4-4452-81b1-441a1b073d44)
+
+
 ## 기술 스택
 > **Language**<br>
 
 ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
 
-> <b>Library</b><br>
+> **Library**<br>
 
 ![PyTorch](https://img.shields.io/badge/PyTorch-%23EE4C2C.svg?style=for-the-badge&logo=PyTorch&logoColor=white)
 ![scikitlearn](https://img.shields.io/badge/scikitlearn-F7931E?style=for-the-badge&logo=scikitlearn&logoColor=white)
@@ -36,14 +46,7 @@
 ![Anaconda](https://img.shields.io/badge/Anaconda-44A833.svg?style=for-the-badge&logo=Anaconda&logoColor=white)
 
 
-## 프로젝트 소개
 
-DKT는 학생들의 지식 상태를 추적하고 이해도를 측정하는 딥러닝 기반의 방법론으로, 개별 학생들에게 맞춤형 피드백을 제공하고 향후 문제 해결 능력을 예측하는 데 사용됩니다.
-
-이 프로젝트의 목적은 각 학생의 수학 이해도와 약한 부분을 파악하여 개인별로 적합한 문제를 추천함으로써, 보다 효율적인 학습 방향을 제시하는 것입니다.
-
-![image](https://github.com/boostcampaitech6/level2-dkt-recsys-04/assets/83867930/aa1ecc6e-8526-4729-a337-81762d4d7c76)
-![image2](https://github.com/boostcampaitech6/level2-dkt-recsys-04/assets/83867930/41b0381c-43b4-4452-81b1-441a1b073d44)
 
 
 <p align="justify">
