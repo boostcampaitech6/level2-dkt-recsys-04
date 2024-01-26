@@ -1,12 +1,8 @@
 ![header](https://capsule-render.vercel.app/api?type=rect&color=0080ff&height=180&section=header&text=Deep&nbsp;Knowledge&nbsp;Tracing(DKT)&%20render&fontSize=50&fontColor=FFFFFF)
 
 
-목차(사진)
-<p align="center">
-  <br>
-  <img src="./images/common/logo-sample.jpeg">
-  <br>
-</p>
+# 목차
+
 
 # 프로젝트 개요
 
