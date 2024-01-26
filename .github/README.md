@@ -1,4 +1,4 @@
-![header](https://capsule-render.vercel.app/api?type=rect&color=0080ff&height=200&section=header&text=Deep&nbsp;Knowledge&nbsp;Tracing(DKT)&desc=RecSys-04&nbsp;파이팅해야조%20render&fontSize=50&fontColor=FFFFFF&fontAlignY=20)
+![header](https://capsule-render.vercel.app/api?type=rect&color=0080ff&height=200&section=header&text=Deep&nbsp;Knowledge&nbsp;Tracing(DKT)&desc=RecSys-04&nbsp;파이팅해야조%20render&fontSize=50&fontColor=FFFFFF&fontAlignY=50)
 
 
 
