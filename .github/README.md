@@ -16,7 +16,7 @@ DKT는 학생들의 지식 상태를 추적하고 이해도를 측정하는 딥�
 
 이 프로젝트의 목적은 각 학생의 수학 이해도와 약한 부분을 파악하여 개인별로 적합한 문제를 추천함으로써 보다 효율적인 학습 방향을 제시하는 것입니다.
 
-![image](https://github.com/boostcampaitech6/level2-dkt-recsys-04/assets/83867930/aa1ecc6e-8526-4729-a337-81762d4d7c76)
+![image](https://github.com/boostcampaitech6/level2-dkt-recsys-04/assets/83867930/aa1ecc6e-8526-4729-a337-81762d4d7c76)<br>
 &#8595;&#8595;
 ![image2](https://github.com/boostcampaitech6/level2-dkt-recsys-04/assets/83867930/41b0381c-43b4-4452-81b1-441a1b073d44)
 
