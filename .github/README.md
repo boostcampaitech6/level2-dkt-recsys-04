@@ -40,14 +40,11 @@
 
 
 # 프로젝트 구조
+1.Data
 
-<구조도 사진>
+2.Model
 
-1. Data
-
-2. Model
-
-### Performance
+3.Performance
 
 ### 기능 4
 
