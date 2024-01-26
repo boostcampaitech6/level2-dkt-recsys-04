@@ -40,11 +40,9 @@
 
 
 # 프로젝트 구조
-1. 첫 번째 항목
-
-2.Model
-
-3.Performance
+1. **첫 번째 항목**
+2. **Model**
+3. **Performance**
 
 ### 기능 4
 
