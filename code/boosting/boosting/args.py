@@ -19,7 +19,7 @@ def parse_args():
     parser.add_argument("--y_column", default='answerCode', type=str, help="test file name")
     
     #### 모델 선언 ####
-    parser.add_argument("--model", default="XGBoost", choices=['XGBoost', 'CatBoost', 'LGBM'], type=str, help="model select")
+    parser.add_argument("--model", default="LGBM", choices=['XGBoost', 'CatBoost', 'LGBM'], type=str, help="model select")
     model = parser.parse_args().model
     
     # Boost 모델 공통

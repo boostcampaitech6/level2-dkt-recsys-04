@@ -16,7 +16,7 @@ def train(args, train_data, model):
     result = model.fit(train_data)
     
     # Train AUC / ACC
-    predict = model.predict(train_data['X_valid'])
+    predict = model.predict_proba(train_data['X_valid'])
     auc, acc = get_metric(train_data['y_valid'], predict)
     
     wandb.log(dict(epoch=args.n_estimators,
@@ -28,7 +28,7 @@ def train(args, train_data, model):
 def inference(args, test_data, model) -> None:
 
     X = test_data[args.X_columns]
-    predict = model.predict(X)
+    predict = model.predict_proba(X)
     
     save_time = get_save_time()
     write_path = os.path.join(args.output_dir, f"submission_{save_time}_{args.model}" + ".csv")
@@ -48,7 +48,7 @@ def kfold_train(args, train_data_list: list, model):
         result = model.fit(train_data)
         
         # Train AUC / ACC
-        predict = result.predict(train_data['X_valid'])
+        predict = result.predict_proba(train_data['X_valid'])
         auc, acc = get_metric(train_data['y_valid'], predict)
         auc_list.append(auc)
         acc_list.append(acc)
@@ -73,7 +73,7 @@ def kfold_inference(args, test_data):
         # 모델 불러오기
         model = pickle.load(open(f'{args.model_dir}{args.model}_{fold + 1}.pkl', 'rb'))
             
-        current_pred = model.predict(test_data[args.X_columns])
+        current_pred = model.predict_proba(test_data[args.X_columns])
         predict += current_pred
     predict = predict / args.n_fold
     
@@ -91,10 +91,6 @@ def get_model(args, data):
     
     try:
         model_name = args.model.lower()
-        if model_name == 'adaboost':
-            model = AdaBoost(args)
-        if model_name == 'gradboost':
-            model = GradBoost(args)
         if model_name == 'xgboost':
             model = XGBoost(args)
         if model_name == 'catboost':

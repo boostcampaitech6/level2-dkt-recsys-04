@@ -27,7 +27,7 @@ class XGBoost():
                               eval_set=[(train_data['X_train'], train_data['y_train']),(train_data['X_valid'], train_data['y_valid'])],
                              )
     
-    def predict(self, X_valid):
+    def predict_proba(self, X_valid):
         return self.model.predict_proba(X_valid)[:, 1]
     
 class CatBoost():
@@ -37,7 +37,7 @@ class CatBoost():
                                         n_estimators=self.args.n_estimators,
                                         learning_rate=self.args.lr,
                                         random_state=np.random.seed(self.args.seed),
-                                        eval_metric='auc'
+                                        eval_metric='AUC'
                                        )
         
     def fit(self, train_data):
@@ -46,7 +46,7 @@ class CatBoost():
                               early_stopping_rounds=10,
                               verbose=50,)
     
-    def predict(self, X_valid):
+    def predict_proba(self, X_valid):
         return self.model.predict_proba(X_valid)[:, 1]
     
 class LGBM():
@@ -76,5 +76,5 @@ class LGBM():
                               )
         return self.model
     
-    def predict(self, X_valid):
+    def predict_proba(self, X_valid):
         return self.model.predict(X_valid)
