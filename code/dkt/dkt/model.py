@@ -488,3 +488,111 @@ class EncoderLayer(nn.Module):
             out = self.ln2(out)
 
         return out
+    
+
+class GRUATTN(ModelBase):
+    def __init__(self,args):
+        super().__init__(args) 
+
+        self.gru = nn.GRU(
+            self.hidden_dim, self.hidden_dim, self.n_layers, batch_first=True
+        )
+        self.config = BertConfig(
+            3,  # not used
+            hidden_size=self.hidden_dim,
+            num_hidden_layers=1,
+            num_attention_heads=self.n_heads,
+            intermediate_size=self.hidden_dim,
+            hidden_dropout_prob=self.drop_out,
+            attention_probs_dropout_prob=self.drop_out,
+        )
+        self.attn = BertEncoder(self.config)
+
+    def forward(self, data):
+        _, X, batch_size, _ = super().forward(data)
+
+        out, _ = self.gru(X)
+        out = out.contiguous().view(batch_size, -1, self.hidden_dim)
+
+
+        extended_attention_mask = data["mask"].unsqueeze(1).unsqueeze(2)
+        extended_attention_mask = extended_attention_mask.to(dtype=torch.float32)
+        extended_attention_mask = (1.0 - extended_attention_mask) * -10000.0
+        head_mask = [None] * self.n_layers
+
+        encoded_layers = self.attn(out, extended_attention_mask, head_mask=head_mask)
+        sequence_output = encoded_layers[-1]
+
+        out = self.fc(sequence_output).view(batch_size, -1)
+        return out
+
+class GRUSaint(ModelBase):
+    def __init__(self,args): # [건우] : args로 몰았기 때문에 args만 씀
+        super().__init__(args) # [건우] : args로 몰았기 때문에 args만 씀
+        
+        self.gru = nn.GRU(
+            self.hidden_dim, self.hidden_dim, self.n_layers, batch_first=True
+        )
+        
+        self.args = args
+        self.device = args.device
+       
+        # Positional encoding
+        self.pos_encoder = PositionalEncoding(self.hidden_dim, self.drop_out, self.max_seq_len)
+        self.pos_decoder = PositionalEncoding(self.hidden_dim, self.drop_out, self.max_seq_len)
+        
+        self.transformer = nn.Transformer(
+            d_model=self.hidden_dim,
+            nhead=self.n_heads,
+            num_encoder_layers=self.n_layers,
+            num_decoder_layers=self.n_layers,
+            dim_feedforward=self.hidden_dim,
+            dropout=self.drop_out,
+            activation='relu')
+
+        self.enc_mask = None
+        self.dec_mask = None
+        self.enc_dec_mask = None
+
+    def get_mask(self, seq_len):
+        mask = torch.from_numpy(np.triu(np.ones((seq_len, seq_len)), k=1))
+
+        return mask.masked_fill(mask==1, float('-inf'))
+
+    def forward(self, data):
+        seq_emb_enc, seq_emb_dec, batch_size, seq_len = super().forward(data) # [건우] 각각 안 받고 data로 한 번에 받음
+
+        enc_out, _ = self.gru(seq_emb_enc)
+        enc_out = enc_out.contiguous().view(batch_size, -1, self.hidden_dim)
+        dec_out, _ = self.gru(seq_emb_dec)
+        dec_out = dec_out.contiguous().view(batch_size, -1, self.hidden_dim)
+
+        # ATTENTION MASK 생성
+        # encoder하고 decoder의 mask는 가로 세로 길이가 모두 동일하여
+        # 사실 이렇게 3개로 나눌 필요가 없다
+        if self.enc_mask is None or self.enc_mask.size(0) != seq_len:
+            self.enc_mask = self.get_mask(seq_len).to(self.device).to(torch.float32)
+
+        if self.dec_mask is None or self.dec_mask.size(0) != seq_len:
+            self.dec_mask = self.get_mask(seq_len).to(self.device).to(torch.float32)
+
+        if self.enc_dec_mask is None or self.enc_dec_mask.size(0) != seq_len:
+            self.enc_dec_mask = self.get_mask(seq_len).to(self.device).to(torch.float32)
+
+        enc_out = enc_out.permute(1, 0, 2)
+        dec_out = dec_out.permute(1, 0, 2)
+
+        # Positional encoding custum
+        enc_out = self.pos_encoder(enc_out)
+        dec_out = self.pos_decoder(dec_out)
+
+        out = self.transformer(enc_out, dec_out,
+                               src_mask=self.enc_mask,
+                               tgt_mask=self.dec_mask,
+                               memory_mask=self.enc_dec_mask)
+  
+        out = out.permute(1, 0, 2)
+        out = out.contiguous().view(batch_size, -1, self.hidden_dim)
+        out = self.fc(out).view(batch_size, -1)
+
+        return out

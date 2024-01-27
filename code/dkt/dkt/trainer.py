@@ -11,7 +11,7 @@ from sklearn.model_selection import KFold
 from .criterion import get_criterion
 from .dataloader import get_loaders, get_loaders_kfold, data_augmentation, split_data
 from .metric import get_metric
-from .model import LSTM, LSTMATTN, BERT, LastQuery, Saint, FixupEncoder
+from .model import LSTM, LSTMATTN, BERT, LastQuery, Saint, FixupEncoder, GRUATTN, GRUSaint
 from .optimizer import get_optimizer
 from .scheduler import get_scheduler
 from .utils import get_logger, logging_conf, get_save_time
@@ -268,6 +268,8 @@ def get_model(args) -> nn.Module:
             "lastquery": LastQuery,
             "saint": Saint,
             "tfixup": FixupEncoder,
+            "gruattn": GRUATTN,
+            "grusaint": GRUSaint
         }.get(model_name)(args) # [건우] model.py에서 각 모델의 init으로 args만 받기 때문
     except KeyError:
         logger.warn("No model name %s found", model_name)
