@@ -13,13 +13,10 @@ logger = get_logger(logger_conf=logging_conf)
 
 def train(args, train_data, model):
     
-    if args.model.lower() == 'lgbm':
-        result = model.fit(train_data)
-    else:
-        result = model.fit(train_data['X_train'], train_data['y_train'])
+    result = model.fit(train_data)
     
     # Train AUC / ACC
-    predict = result.predict(train_data['X_valid'])
+    predict = model.predict(train_data['X_valid'])
     auc, acc = get_metric(train_data['y_valid'], predict)
     
     wandb.log(dict(epoch=args.n_estimators,
@@ -48,10 +45,7 @@ def kfold_train(args, train_data_list: list, model):
     auc_list = []
     acc_list = []
     for fold, train_data in enumerate(train_data_list):
-        if args.model.lower() == 'lgbm':
-            result = model.fit(train_data)
-        else:
-            result = model.fit(train_data['X_train'], train_data['y_train'])
+        result = model.fit(train_data)
         
         # Train AUC / ACC
         predict = result.predict(train_data['X_valid'])

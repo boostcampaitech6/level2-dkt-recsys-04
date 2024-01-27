@@ -42,10 +42,6 @@ class Preprocess:
 
         train = df[df['userID'].isin(user_ids)]
         test = df[df['userID'].isin(user_ids) == False]
-
-        # test데이터셋은 각 유저의 마지막 interaction만 추출
-        test = test.sort_values(by=['userID', 'Timestamp']).reset_index(drop=True)
-        test = test[test['userID'] != test['userID'].shift(-1)]
         
         data['X_train'] = train[self.args.X_columns]
         data['y_train'] = train[self.args.y_column]
@@ -110,7 +106,7 @@ class Preprocess:
     def __feature_engineering(self, df: pd.DataFrame) -> pd.DataFrame:
         # TODO: Fill in if needed
         
-        df = sehoon.feat_user_correct_stats(df, 'mean')
+        # df = sehoon.feat_user_correct_stats(df, 'mean')
         # df = sehoon.feat_ass_correct_stats(df, 'mean')
         # df = sehoon.feat_testid_correct_stats(df, 'mean')
         # df = sehoon.feat_tag_correct_stats(df, 'mean')
@@ -142,10 +138,11 @@ class Preprocess:
         train_file_path = os.path.join(self.args.data_dir, train_file_name)
         test_file_path = os.path.join(self.args.data_dir, test_file_name)
         train_df = pd.read_csv(train_file_path, dtype=dtype, parse_dates=['Timestamp'])
-        test_df = pd.read_csv(test_file_path, dtype=dtype, parse_dates=['Timestamp'])
+        # test_df = pd.read_csv(test_file_path, dtype=dtype, parse_dates=['Timestamp'])
         
         # train, test 데이터 merge 사용
-        merge_df = pd.concat([train_df, test_df])
+        # merge_df = pd.concat([train_df, test_df])
+        merge_df = train_df
         merge_df = merge_df.sort_values(by=['userID', 'Timestamp']).reset_index(drop=True)
         merge_df = self.__feature_engineering(merge_df)
         merge_df = self.__preprocessing(merge_df)

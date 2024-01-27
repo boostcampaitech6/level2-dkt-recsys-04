@@ -19,32 +19,19 @@ def parse_args():
     parser.add_argument("--y_column", default='answerCode', type=str, help="test file name")
     
     #### 모델 선언 ####
-    parser.add_argument("--model", default="LGBM", choices=['AdaBoost', 'GradBoost', 'XGBoost', 'CatBoost', 'LGBM'], type=str, help="model select")
+    parser.add_argument("--model", default="XGBoost", choices=['XGBoost', 'CatBoost', 'LGBM'], type=str, help="model select")
     model = parser.parse_args().model
     
     # Boost 모델 공통
     parser.add_argument('--test_size', default=0.2, type=float, help='Train/Valid split 비율을 조정할 수 있습니다.')
-    parser.add_argument("--n_estimators", default=500, type=int, help="number of epochs")
+    parser.add_argument("--n_estimators", default=100, type=int, help="number of epochs")
     parser.add_argument('--data_shuffle', default=True, type=bool, help='데이터 셔플 여부를 조정할 수 있습니다.')
     parser.add_argument('--lr', default=0.05, type=float, help='Learning rate')
     
-    parser.add_argument('--kfold', default='kfold', choices=['', 'kfold'], type=str, help='choice kfold')
-    parser.add_argument('--n_fold', default=2, type=int, help='Number of Kfold')
+    parser.add_argument('--kfold', default='', choices=['', 'kfold'], type=str, help='choice kfold')
+    parser.add_argument('--n_fold', default=3, type=int, help='Number of Kfold')
     
-    if model == 'AdaBoost':
-        pass
-    elif model == 'GradBoost':
-        parser.add_argument('--subsample', default=1.0, type=float, help='')
-        parser.add_argument('--min_samples_split', default=2, type=float, help='')
-        parser.add_argument('--min_samples_leaf', default=1, type=float, help='')
-        parser.add_argument('--min_weight_fraction_leaf', default=0.0, type=float, help='')
-        parser.add_argument('--max_depth', default=3, type=int, help='')
-        parser.add_argument('--min_impurity_decrease', default=0.0, type=float, help='')
-        parser.add_argument('--verbose', default=0, type=int, help='')
-        parser.add_argument('--validation_fraction', default=0.1, type=float, help='')
-        parser.add_argument('--tol', default=0.0001, type=float, help='')
-        parser.add_argument('--ccp_alpha', default=0.0, type=float, help='')
-    elif model == 'XGBoost':
+    if model == 'XGBoost':
         parser.add_argument('--max_depth_xgb', default=8, type=int, help='')
         parser.add_argument('--colsample_bylevel', default=0.9, type=float, help='')
         parser.add_argument('--colsample_bytree', default=0.8, type=float, help='')
