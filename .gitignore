@@ -11,6 +11,7 @@ code/lightgcn/wandb
 *.json
 *.tfevents
 *.tsv
+*.pkl
 # # data
 # # code/data
 # # code/eda
