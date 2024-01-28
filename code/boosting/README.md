@@ -22,9 +22,7 @@ conda init
 (gcn) python inference.py
 ```
 ## Flow Chart
-![Boosting_Flow_Chart](https://github.com/boostcampaitech6/level2-dkt-recsys-04/assets/8871767/9d0eff72-ddd6-4ab1-9bf3-bf4ff00f3ae4)
-
-
+![Boosting_Flow_Chart](https://github.com/boostcampaitech6/level2-dkt-recsys-04/assets/8871767/4031ba71-8ec2-4232-ab36-8fbc3e55f7bc)
 ## Files Tree
 ```
 📦boosting
@@ -42,7 +40,6 @@ conda init
 ┣ requirements.txt
 ┃ wandb_sweep.yaml
 ```
-
 
 `📦boosting`
 * `main.py` : main() 함수로 최초 실행하는 파일입니다.
