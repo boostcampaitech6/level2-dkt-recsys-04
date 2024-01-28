@@ -1,17 +1,20 @@
 ![header](https://capsule-render.vercel.app/api?type=rect&color=0080ff&height=180&section=header&text=Deep&nbsp;Knowledge&nbsp;Tracing(DKT)&%20render&fontSize=50&fontColor=FFFFFF)
 
-# 목차
-### [Team](#Team)
-### [Skill](#Skill)
-### [Project Overview](#Project-Overview)
-### [Project Structure](#Project-Structure)
-  ##### [1. Data](1. Data)
+# Project Overview
+
+### 초등학교부터 대학교까지 우리는 시험을 통해 지식을 평가해왔습니다. 그러나 시험에는 한계가 있고, 개인 맞춤형 피드백이 부족합니다. 이를 보완하기 위해 Deep Knowledge Tracing(DKT)가 등장했습니다. DKT는 우리의 지식 상태를 추적하고, 개인 맞춤형 학습을 위한 문제 추천 및 미래 성적 예측이 가능합니다.   
+### 본 대회에서는 Iscream 데이터셋을 활용하여 DKT모델을 구축하여 주어진 마지막 문제를 맞출지 틀릴지 예측할 것입니다.  
+ 
+![image2](https://github.com/boostcampaitech6/level2-dkt-recsys-04/assets/83867930/41b0381c-43b4-4452-81b1-441a1b073d44)  
+  
+
 
 # Team
 | **김세훈** | **문찬우** | **김시윤** | **배건우** | **이승준** |
 | :------: |  :------: | :------: | :------: | :------: |
 | [<img src="https://avatars.githubusercontent.com/u/8871767?v=4" height=150 width=150> <br/> @warpfence](https://github.com/warpfence) | [<img src="https://avatars.githubusercontent.com/u/95879995?v=4" height=150 width=150> <br/> @chanwoomoon](https://github.com/chanwoomoon) | [<img src="https://avatars.githubusercontent.com/u/68991530?v=4" height=150 width=150> <br/> @tldbs5026](https://github.com/tldbs5026) | [<img src="https://avatars.githubusercontent.com/u/83867930?v=4" height=150 width=150> <br/> @gunwoof](https://github.com/gunwoof) | [<img src="https://avatars.githubusercontent.com/u/133944361?v=4" height=150 width=150> <br/> @llseungjun](https://github.com/llseungjun) |
-|  |  |  |  |  |
+| EDA & Feature engineering <br> Boosting모델 베이스라인 구축 <br> T-Fixup모델 구현 <br> K-Fold 적용 <br> Data Augmentation 적용 | EDA & Feature engineering <br> Lastquery 모델링 <br> Rnn, Gru, Tcn, 등 Sequence 모델링 | EDA & Feature engineering <br> LGBM 베이스라인 구축 및 최적화 <br> lightgcn 모델링 <br> Ensemble 진행 | Base environment 구축 <br> Base pipeline 구축 <br> Sweep 구현 <br> Stacking ensemble 구현 | EDA & Feature engineering <br> Saint <br> Saint + GRU <br> GRUATTN 모델링  |
+
 
 # Skill 
 ### Language
@@ -35,13 +38,6 @@
   ![NVIDIA-TeslaV100](https://img.shields.io/badge/NVIDIA-TeslaV100-76B900?style=for-the-badge&logo=nvidia&logoColor=white)
   ![Ubuntu](https://img.shields.io/badge/Ubuntu-E95420?style=for-the-badge&logo=ubuntu&logoColor=white)
   ![Anaconda](https://img.shields.io/badge/Anaconda-44A833.svg?style=for-the-badge&logo=Anaconda&logoColor=white)
-
-
-# Project Overview
-
-### 딥러닝 기반의 방법론으로 학생들의 지식 상태를 추적하고 이해도를 측정 -> 마지막 문제를 맞출지 예측
- 
-![image2](https://github.com/boostcampaitech6/level2-dkt-recsys-04/assets/83867930/41b0381c-43b4-4452-81b1-441a1b073d44)
 
 
 # Project Structure
