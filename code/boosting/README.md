@@ -1,5 +1,15 @@
-# Baseline2: LightGCN
-
+# Baseline3: Boosting
+## Package Version
+```bash
+numpy==1.26.3
+pandas==2.1.4
+ipykernel==6.29.0
+scikit-learn==1.3.2
+lightgbm==4.1.0
+catboost==1.2.2
+xgboost==2.0.3
+wandb==0.16.2
+```
 ## Setup
 ```bash
 cd /opt/ml/input/code/lightgcn
@@ -11,15 +21,44 @@ conda init
 (gcn) python train.py
 (gcn) python inference.py
 ```
+## Flow Chart
+![Boosting_Flow_Chart](https://github.com/boostcampaitech6/level2-dkt-recsys-04/assets/8871767/9d0eff72-ddd6-4ab1-9bf3-bf4ff00f3ae4)
 
-## Files
-`code/lightgcn`
-* `train.py`: 학습코드입니다.
-* `inference.py`: 추론 후 `submissions.csv` 파일을 만들어주는 소스코드입니다.
-* `requirements.txt`: 모델 학습에 필요한 라이브러리들이 정리되어 있습니다.
 
-`code/lightgcn/lightgcn`
-* `args.py`: `argparse`를 통해 학습에 활용되는 여러 argument들을 받아줍니다.
-* `datasets.py`: 학습 데이터를 불러 GCN 입력에 맞게 변환해줍니다.
-* `trainer.py`: 훈련에 사용되는 함수들을 포함합니다.
-* `utils.py`: 학습에 필요한 부수적인 함수들을 포함합니다.
+## Files Tree
+```
+📦boosting
+┣ 📂boosting
+┃ ┣ args.py
+┃ ┣ dataloader.py
+┃ ┣ metric.py
+┃ ┣ model.py
+┃ ┣ trainer.py
+┃ ┗ utils.py
+┣ 📂models
+┣ 📂outputs
+┣ main.py
+┣ README.md
+┣ requirements.txt
+┃ wandb_sweep.yaml
+```
+
+
+`📦boosting`
+* `main.py` : main() 함수로 최초 실행하는 파일입니다.
+* `requirements.txt` : 패키지 실행에 필요한 라이브러리들이 정리되어 있습니다.
+* `wandb_sweep.yaml` : wandb(Weights and Biases) 툴의 Sweep을 실행하기 위한 파일입니다.
+
+`📦boosting/📂boosting`
+* `args.py` : 학습에 활용되는 여러 argument가 선언되어 있습니다.
+* `dataloader.py` : 학습에 필요한 파일을 불러오고 Featrue Engineering와 Pre-processing을 진행합니다.
+* `metric.py` : metric이 정의되어 있는 함수를 포함합니다.
+* `model.py` : Boosting계열 모델을 정의하는 클래스를 포함합니다.
+* `trainer.py` : Model Train과 관련된 함수를 포함합니다.
+* `utils.py` : 학습에 필요한 부수적인 함수들을 포함합니다.
+
+`📦boosting/📂model`
+* K-fold를 진행할 때 생성되는 모델을 저장하는 폴더입니다.
+
+`📦boosting/📂outputs`
+* 학습이 완료된 모델에서부터 나온 Inference 결과를 저장하는 폴더입니다.
