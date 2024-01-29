@@ -5,7 +5,7 @@
 ### [Skill](#Skill)
 ### [Project Overview](#Project-Overview)
 ### [Project Structure](#Project-Structure)
-  ##### [2. Data](#2.-Data)
+  ##### [2. Data](#2.Data)
 
 # Team
 | **김세훈** | **문찬우** | **김시윤** | **배건우** | **이승준** |
