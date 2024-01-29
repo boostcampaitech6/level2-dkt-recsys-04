@@ -81,6 +81,7 @@
     │  └─ __init__.py
     ├─ .gitignore
     ├─ readme.md
+    ├─ DKT_Recsys_팀_리포트(04조).pdf
 ```
 ![AI 파이프라인](https://github.com/boostcampaitech6/level2-dkt-recsys-04/assets/83867930/c1765101-edf3-419c-9cab-cf315835e7f2)
 ### 1. Environment
@@ -128,5 +129,6 @@ cudatoolkit==11.3
 ![result](https://github.com/boostcampaitech6/level2-dkt-recsys-04/assets/68991530/ad3ecb4d-ce3d-4735-836e-318d1c998502)
 
 # Laboratory Report
+[DKT_Recsys_팀_리포트](https://github.com/boostcampaitech6/level2-dkt-recsys-04/blob/main/DKT_Recsys_%ED%8C%80_%EB%A6%AC%ED%8F%AC%ED%8A%B8(04%EC%A1%B0).pdf)
 
-![header](https://capsule-render.vercel.app/api?type=rect&color=0080ff&height=180&section=header&text=Deep&nbsp;Knowledge&nbsp;Tracing(DKT)&%20render&fontSize=50&fontColor=FFFFFF)
+
