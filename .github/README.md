@@ -5,15 +5,13 @@
 ### [Skill](#Skill-1)
 ### [Project Overview](#Project-Overview-1)
 ### [Project Structure](#Project-Structure-1)
-&nbsp;&nbsp;[일정](#일정-1)<br>
+&nbsp;&nbsp;[Pipeline](#Pipeline-1)<br>
+&nbsp;&nbsp;[Calendar](#Calendar-1)<br>
 &nbsp;&nbsp;[1. Environment](#1-Environment-1)<br>
 &nbsp;&nbsp;[2. Data](#2-Data-1)<br>
 &nbsp;&nbsp;[3. Model](#3-Model-1)<br>
 &nbsp;&nbsp;[4. Ensemble](#4-Ensemble-1)<br>
-&nbsp;&nbsp;[5. Performance](#5-Performance-1)<br>
-### [배운 점 & 아쉬운 점](#배운-점-&-아쉬운-점-1)
-&nbsp;&nbsp;[배운 점](#배운-점-1)<br>
-&nbsp;&nbsp;[아쉬운 점](#아쉬운-점-1)<br>  
+&nbsp;&nbsp;[5. Performance](#5-Performance-1)<br> 
 ### [Laboratory Report](#Laboratory-Report-1)
 
 # Team
@@ -56,7 +54,29 @@
 ### 본 대회에서는 Iscream 데이터셋을 활용하여 DKT모델을 구축하여 주어진 마지막 문제를 맞출지 틀릴지 예측할 것입니다.  
  
 ![competition](https://github.com/boostcampaitech5/level2_dkt-recsys-09/assets/83867930/3a48942b-ef29-49a0-9fc0-f5dd65bcc78e) 
-
+```bash
+📦 code
+    ├─ boosting
+    │  ├─ boosting
+    │  ├─ lightgbm_siyun
+    │  ├─ README.md
+    │  ├─ main.py
+    │  ├─ requirements copy.txt
+    │  └─ requirements.txt
+    ├─ dkt
+    │  ├─ asset
+    │  ├─ dkt
+    │  ├─ wandb
+    │  ├─ README.md
+    │  ├─ inference.py
+    │  ├─ requirements.txt
+    │  └─ train.py
+    ├─ lightgcn
+    │  ├─ readme.md
+    │  └─ __init__.py
+    ├─ .gitignore
+    ├─ readme.md
+```
 # Project Structure
 ![model_seq](https://github.com/boostcampaitech6/level2-dkt-recsys-04/assets/95879995/82b5668c-2b82-4038-8900-0ab418a64bad)
 
@@ -73,11 +93,6 @@
 ### 5. Performance
   -
 
-
-# 배운 점 & 아쉬운 점
-### 배운점
-  -
-### 아쉬운점
   -
 # Laboratory Report
 
