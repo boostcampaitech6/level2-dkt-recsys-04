@@ -1,14 +1,16 @@
 ![header](https://capsule-render.vercel.app/api?type=rect&color=0080ff&height=180&section=header&text=Deep&nbsp;Knowledge&nbsp;Tracing(DKT)&%20render&fontSize=50&fontColor=FFFFFF)
 
-# Project Overview
-
-### 초등학교부터 대학교까지 우리는 시험을 통해 지식을 평가해왔습니다. 그러나 시험에는 한계가 있고, 개인 맞춤형 피드백이 부족합니다. 이를 보완하기 위해 Deep Knowledge Tracing(DKT)가 등장했습니다. DKT는 우리의 지식 상태를 추적하고, 개인 맞춤형 학습을 위한 문제 추천 및 미래 성적 예측이 가능합니다.   
-### 본 대회에서는 Iscream 데이터셋을 활용하여 DKT모델을 구축하여 주어진 마지막 문제를 맞출지 틀릴지 예측할 것입니다.  
- 
-![image2](https://github.com/boostcampaitech6/level2-dkt-recsys-04/assets/83867930/41b0381c-43b4-4452-81b1-441a1b073d44)  
-  
-
-
+# 목차
+### [Team](#Team-1)
+### [Skill](#Skill-1)
+### [Project Overview](#Project-Overview-1)
+### [Project Structure](#Project-Structure-1)
+- [일정](#일정-1)
+- [1. Environment](#1-Environment-1)
+- [2. Data](#2-Data-1)
+- [3. Model](#3-Model-1)
+- [4. Ensemble](#4-Ensemble-1)
+- [5. Performance](#5-Performance-1)
 
 # Team
 | **김세훈** | **문찬우** | **김시윤** | **배건우** | **이승준** |
@@ -40,6 +42,12 @@
   ![Ubuntu](https://img.shields.io/badge/Ubuntu-E95420?style=for-the-badge&logo=ubuntu&logoColor=white)
   ![Anaconda](https://img.shields.io/badge/Anaconda-44A833.svg?style=for-the-badge&logo=Anaconda&logoColor=white)
 
+# Project Overview
+
+### 초등학교부터 대학교까지 우리는 시험을 통해 지식을 평가해왔습니다. 그러나 시험에는 한계가 있고, 개인 맞춤형 피드백이 부족합니다. 이를 보완하기 위해 Deep Knowledge Tracing(DKT)가 등장했습니다. DKT는 우리의 지식 상태를 추적하고, 개인 맞춤형 학습을 위한 문제 추천 및 미래 성적 예측이 가능합니다.   
+### 본 대회에서는 Iscream 데이터셋을 활용하여 DKT모델을 구축하여 주어진 마지막 문제를 맞출지 틀릴지 예측할 것입니다.  
+ 
+![image2](https://github.com/boostcampaitech6/level2-dkt-recsys-04/assets/83867930/41b0381c-43b4-4452-81b1-441a1b073d44)  
 
 # Project Structure
 <구조도 사진>
