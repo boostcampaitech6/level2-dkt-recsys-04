@@ -57,7 +57,7 @@
 # Project Structure
 <구조도 사진>
 ### 일정
-![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/d9de03aa-db74-4401-9fa2-4f450c6179b7/7e1df0d2-ad59-418a-83e0-4656adeb4bf6/Untitled.png)
+![dd](https://prod-files-secure.s3.us-west-2.amazonaws.com/d9de03aa-db74-4401-9fa2-4f450c6179b7/7e1df0d2-ad59-418a-83e0-4656adeb4bf6/Untitled.png)
 ### 1. Environment
   -
 ### 2. Data
