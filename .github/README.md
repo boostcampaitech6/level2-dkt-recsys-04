@@ -2,7 +2,7 @@
 
 # 목차
 ### [Team](#Team-1)
-### [Skill](#Skill)
+### [Skill](#Skill-2)
 ### [Project Overview](#Project-Overview)
 ### [Project Structure](#Project-Structure)
   ##### [2. Data](#2-Data)
