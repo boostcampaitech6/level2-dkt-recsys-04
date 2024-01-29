@@ -9,6 +9,7 @@
   
 
 
+
 # Team
 | **김세훈** | **문찬우** | **김시윤** | **배건우** | **이승준** |
 | :------: |  :------: | :------: | :------: | :------: |
@@ -43,6 +44,8 @@
 # Project Structure
 <구조도 사진>
 ### 일정
+![Untitled](https://github.com/boostcampaitech6/level2-dkt-recsys-04/assets/83867930/569f6ebb-9794-48e1-a354-9b86ca3b77c9)
+
 ### 1. Environment
   -
 ### 2. Data
