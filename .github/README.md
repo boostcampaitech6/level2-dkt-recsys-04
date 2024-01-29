@@ -1,7 +1,7 @@
 ![header](https://capsule-render.vercel.app/api?type=rect&color=0080ff&height=180&section=header&text=Deep&nbsp;Knowledge&nbsp;Tracing(DKT)&%20render&fontSize=50&fontColor=FFFFFF)
 
 # 목차
-### [Team](#Team)
+### [Team](#Team-1)
 ### [Skill](#Skill)
 ### [Project Overview](#Project-Overview)
 ### [Project Structure](#Project-Structure)
