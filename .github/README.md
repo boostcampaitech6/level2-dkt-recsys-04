@@ -87,18 +87,19 @@
 ### 1. Environment
   -
 ### 2. Data
+  - 
+### 3. Model
   - **Boosting model**
-    
+    ![Boosting_Flow_Chart](https://github.com/boostcampaitech6/level2-dkt-recsys-04/assets/8871767/4031ba71-8ec2-4232-ab36-8fbc3e55f7bc)
   - **Sequence model**
     ![model_seq](https://github.com/boostcampaitech6/level2-dkt-recsys-04/assets/95879995/82b5668c-2b82-4038-8900-0ab418a64bad)
-### 3. Model
-  -
 ### 4. Ensemble
   -
 ### 5. Performance
   -
 
   -
+
 # Laboratory Report
 
 ![header](https://capsule-render.vercel.app/api?type=rect&color=0080ff&height=180&section=header&text=Deep&nbsp;Knowledge&nbsp;Tracing(DKT)&%20render&fontSize=50&fontColor=FFFFFF)
