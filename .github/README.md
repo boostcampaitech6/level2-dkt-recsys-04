@@ -85,7 +85,17 @@
 ```
 
 ### 1. Environment
-  -
+```
+pandas==20.3
+scikit-learn==1.3.2
+tqdm==4.51.0
+wandb==0.16.2
+transformers==4.36.2
+pytorch==1.12.1
+torchvision==0.13.1
+torchaudio==0.12.1
+cudatoolkit==11.3
+```
 ### 2. Data
   - 
 ### 3. Model
