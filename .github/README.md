@@ -61,14 +61,14 @@
 ### Pipeline
 ```bash
 📦 code
-    ├─ boosting
+    ├─ boosting # boosting model
     │  ├─ boosting
     │  ├─ lightgbm_siyun
     │  ├─ README.md
     │  ├─ main.py
     │  ├─ requirements copy.txt
     │  └─ requirements.txt
-    ├─ dkt
+    ├─ dkt # sequence model
     │  ├─ asset
     │  ├─ dkt
     │  ├─ wandb
@@ -76,7 +76,7 @@
     │  ├─ inference.py
     │  ├─ requirements.txt
     │  └─ train.py
-    ├─ lightgcn
+    ├─ lightgcn # graph model
     │  ├─ readme.md
     │  └─ __init__.py
     ├─ .gitignore
