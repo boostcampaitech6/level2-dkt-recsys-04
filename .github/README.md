@@ -10,8 +10,7 @@
 &nbsp;&nbsp;[1. Environment](#1-Environment-1)<br>
 &nbsp;&nbsp;[2. Data](#2-Data-1)<br>
 &nbsp;&nbsp;[3. Model](#3-Model-1)<br>
-&nbsp;&nbsp;[4. Ensemble](#4-Ensemble-1)<br>
-&nbsp;&nbsp;[5. Performance](#5-Performance-1)<br> 
+&nbsp;&nbsp;[4. Performance](#5-Performance-1)<br> 
 ### [Laboratory Report](#Laboratory-Report-1)
 
 # Team
@@ -83,7 +82,7 @@
     ├─ .gitignore
     ├─ readme.md
 ```
-
+![AI 파이프라인](https://github.com/boostcampaitech6/level2-dkt-recsys-04/assets/83867930/c1765101-edf3-419c-9cab-cf315835e7f2)
 ### 1. Environment
 ```
 pandas==20.3
@@ -103,9 +102,8 @@ cudatoolkit==11.3
     ![Boosting_Flow_Chart](https://github.com/boostcampaitech6/level2-dkt-recsys-04/assets/8871767/4031ba71-8ec2-4232-ab36-8fbc3e55f7bc)
   - **Sequence model**
     ![model_seq](https://github.com/boostcampaitech6/level2-dkt-recsys-04/assets/95879995/82b5668c-2b82-4038-8900-0ab418a64bad)
-### 4. Ensemble
-  -
-### 5. Performance
+
+### 4. Performance
 
 | **Model** | **LGBM-v1** | **Saint** | **Last-Query + GRU** | **LSTMATTN** | **GRUATTN** | **LGBM-v2** |
 | :------: |  :------: | :------: | :------: | :------: | :------: | :------: |
