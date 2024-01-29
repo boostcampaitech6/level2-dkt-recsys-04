@@ -96,7 +96,19 @@ torchaudio==0.12.1
 cudatoolkit==11.3
 ```
 ### 2. Data
-  - 
+**`userID`** : 사용자 별 고유번사로 총 7,422명의 사용자 데이터가 존재합니다.
+
+**`assessmentItemID` :** 문항의 고유번호이며, 총 9,454개의 고유 문항이 있습니다.
+
+**`testID` :** 시험지의 고유번호이며, 총 1,537개의 고유한 시험지가 있습니다.
+
+**`answerCode` :** 사용자가 해당 문항을 맞췄는지 여부이며,  0은 틀릿 것, 1은 맞춘 것입니다. test 데이터의 경우 마지막 시퀀스의 answerCode가 -1로 예측해야 할 값입니다.
+
+**`Timestamp` :** 사용자가 해당문항을 풀기 시작한 시점의 데이터입니다.
+
+**`KnowleadgeTag` :** 문항 당 하나씩 배정되는 태그로, 일종의 중분류 역할을 합니다. 912개의 고유 태그가 존재합니다.
+
+![feature](https://github.com/boostcampaitech6/level2-dkt-recsys-04/assets/68991530/198f77f4-ee69-4172-9033-0602a47cf6ba)
 ### 3. Model
   - **Boosting model**
     ![Boosting_Flow_Chart](https://github.com/boostcampaitech6/level2-dkt-recsys-04/assets/8871767/4031ba71-8ec2-4232-ab36-8fbc3e55f7bc)
