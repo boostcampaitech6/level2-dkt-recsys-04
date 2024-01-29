@@ -83,11 +83,14 @@
     ├─ .gitignore
     ├─ readme.md
 ```
-![model_seq](https://github.com/boostcampaitech6/level2-dkt-recsys-04/assets/95879995/82b5668c-2b82-4038-8900-0ab418a64bad)
+
 ### 1. Environment
   -
 ### 2. Data
-  -
+  - **Boosting model**
+    
+  - **Sequence model**
+    ![model_seq](https://github.com/boostcampaitech6/level2-dkt-recsys-04/assets/95879995/82b5668c-2b82-4038-8900-0ab418a64bad)
 ### 3. Model
   -
 ### 4. Ensemble
