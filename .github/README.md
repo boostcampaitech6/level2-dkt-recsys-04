@@ -57,7 +57,8 @@
 # Project Structure
 <구조도 사진>
 ### 일정
-![dd](https://prod-files-secure.s3.us-west-2.amazonaws.com/d9de03aa-db74-4401-9fa2-4f450c6179b7/7e1df0d2-ad59-418a-83e0-4656adeb4bf6/Untitled.png)
+![Untitled](https://github.com/boostcampaitech6/level2-dkt-recsys-04/assets/83867930/569f6ebb-9794-48e1-a354-9b86ca3b77c9)
+
 ### 1. Environment
   -
 ### 2. Data
