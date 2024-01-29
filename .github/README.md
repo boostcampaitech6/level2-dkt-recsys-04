@@ -11,7 +11,10 @@
 &nbsp;&nbsp;[3. Model](#3-Model-1)<br>
 &nbsp;&nbsp;[4. Ensemble](#4-Ensemble-1)<br>
 &nbsp;&nbsp;[5. Performance](#5-Performance-1)<br>
-  
+### [배운 점 & 아쉬운 점](#배운-점-&-아쉬운-점-1)
+&nbsp;&nbsp;[배운 점](#배운-점-1)<br>
+&nbsp;&nbsp;[아쉬운 점](#아쉬운-점-1)<br>  
+### [Laboratory Report](#Laboratory-Report-1)
 
 # Team
 | **김세훈** | **문찬우** | **김시윤** | **배건우** | **이승준** |
