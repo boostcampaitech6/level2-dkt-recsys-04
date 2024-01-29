@@ -96,9 +96,16 @@
 ### 4. Ensemble
   -
 ### 5. Performance
-  -
 
-  -
+| **Model** | **LGBM-v1** | **Saint** | **Last-Query + GRU** | **LSTMATTN** | **GRUATTN** | **LGBM-v2** |
+| :------: |  :------: | :------: | :------: | :------: | :------: | :------: |
+| **Weight** | **0.67** | **0.084** | **0.064** | **0.064** | **0.059** | **0.059** | 
+
+| **Public AUC** | **Public ACC** |
+| :------: |  :------: | 
+| 0.8156 | 0.7527 | 
+
+![result](https://github.com/boostcampaitech6/level2-dkt-recsys-04/assets/68991530/ad3ecb4d-ce3d-4735-836e-318d1c998502)
 
 # Laboratory Report
 
