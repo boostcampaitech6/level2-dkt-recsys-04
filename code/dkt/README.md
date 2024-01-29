@@ -1,30 +1,87 @@
 # Baseline1: Deep Knowledge Tracing
-
+## Package Version
+```bash
+torch
+pandas
+scikit-learn
+tqdm
+wandb
+transformers
+```
 ## Setup
 ```bash
-cd /opt/ml/input/code/dkt
+cd /opt/ml/input/code/lightgcn
 conda init
 (base) . ~/.bashrc
-(base) conda create -n dkt python=3.10 -y
-(base) conda activate dkt
-(dkt) pip install -r requirements.txt
-(dkt) python train.py
-(dkt) python inference.py
+(base) conda create -n gcn python=3.10 -y
+(base) conda activate gcn
+(gcn) pip install -r requirements.txt
+(gcn) python train.py
+(gcn) python inference.py
+```
+## Flow Chart
+![model_seq](https://github.com/boostcampaitech6/level2-dkt-recsys-04/assets/95879995/c7e66caf-d0fc-462c-9202-b4a9b02893fb)
+)
+## Files Tree
+```
+📦 dkt
+├─📂 asset
+│  ├─ KnowledgeTag_classes.npy
+│  ├─ assessmentItemID_classes.npy
+│  ├─ paper_number_classes.npy
+│  └─ testId_classes.npy
+├─📂 dkt
+│  ├─ __pycache__
+│  ├─📂 feature_engineering
+│  ├─ args.py
+│  ├─ config.yaml
+│  ├─ criterion.py
+│  ├─ dataloader.py
+│  ├─ metric.py
+│  ├─ model.py
+│  ├─ optimizer.py
+│  ├─ scheduler.py
+│  ├─ trainer.py
+│  └─ utils.py
+├─ 📂wandb
+├─ README.md
+├─ inference.py
+├─ requirements.txt
+└─ train.py
 ```
 
-## Files
-`code/dkt`
-* `train.py`: 학습코드입니다.
-* `inference.py`: 추론 후 `submissions.csv` 파일을 만들어주는 소스코드입니다.
-* `requirements.txt`: 모델 학습에 필요한 라이브러리들이 정리되어 있습니다.
+`📦dkt`
+* `train.py` : main() 함수로 최초 실행하는 파일입니다.
+* `inference.py` : submission 제출을 위해 결과값을 도출 하는 파일입니다.
+* `requirements.txt` : 패키지 실행에 필요한 라이브러리들이 정리되어 있습니다.
+* `wandb_sweep.yaml` : wandb(Weights and Biases) 툴의 Sweep을 실행하기 위한 파일입니다.
 
-`code/dkt/dkt`
-* `args.py`: `argparse`를 통해 학습에 활용되는 여러 argument들을 받아줍니다.
-* `criterion.py`: Loss를 포함합니다.
-* `datloader.py`: dataloader를 불러옵니다.
-* `metric.py`: metric 계산하는 함수를 포함합니다.
-* `model.py`: 여러 모델 소스 코드를 포함합니다. `LSTM`, `LSTMATTN`, `BERT`를 가지고 있습니다.
-* `optimizer.py`: optimizer를 instantiate할 수 있는 소스코드를 포함합니다.
-* `scheduler.py`: scheduler 소스코드를 포함합니다.
-* `trainer.py`: 훈련에 사용되는 함수들을 포함합니다.
-* `utils.py`: 학습에 필요한 부수적인 함수들을 포함합니다.
+`📦dkt/📂asset`
+* `KnowledgeTag_classes.npy` : KnowledgeTag의 encoder data
+* `assessmentItemID_classes.npy` : assessmentItemID_classes의 encoder data
+* `paper_number_classes.npy` : paper_number_classes의 encoder data
+* `testId_classes.npy` : testId_classes의 encoder data
+
+
+`📦dkt/📂dkt`
+* `args.py` : 학습에 활용되는 여러 argument가 선언되어 있습니다.
+* `config.yaml` : sweep을 돌리기위한 설정 파일입니다.
+* `criterion.py` : loss 계산을 위한 파일입니다.
+* `dataloader.py` : 학습에 필요한 파일을 불러오고 Featrue Engineering와 Pre-processing을 진행합니다.
+* `metric.py` : metric이 정의되어 있는 함수를 포함합니다.
+* `model.py` : Boosting계열 모델을 정의하는 클래스를 포함합니다.
+* `optimizer.py` : optimizer 설정을 위한 파일입니다.
+* `scheduler.py` : scheduler 설정을 위한 파일입니다.
+* `trainer.py` : Model Train과 관련된 함수를 포함합니다.
+* `utils.py` : 학습에 필요한 부수적인 함수들을 포함합니다.
+
+
+`📦dkt/📂wandb`
+* wandb 학습 결과를 저장하기 위한 폴더입니다.
+
+
+
+
+
+
+
