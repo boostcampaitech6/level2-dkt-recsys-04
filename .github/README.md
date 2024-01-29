@@ -16,8 +16,12 @@
 | **김세훈** | **문찬우** | **김시윤** | **배건우** | **이승준** |
 | :------: |  :------: | :------: | :------: | :------: |
 | [<img src="https://avatars.githubusercontent.com/u/8871767?v=4" height=150 width=150> <br/> @warpfence](https://github.com/warpfence) | [<img src="https://avatars.githubusercontent.com/u/95879995?v=4" height=150 width=150> <br/> @chanwoomoon](https://github.com/chanwoomoon) | [<img src="https://avatars.githubusercontent.com/u/68991530?v=4" height=150 width=150> <br/> @tldbs5026](https://github.com/tldbs5026) | [<img src="https://avatars.githubusercontent.com/u/83867930?v=4" height=150 width=150> <br/> @gunwoof](https://github.com/gunwoof) | [<img src="https://avatars.githubusercontent.com/u/133944361?v=4" height=150 width=150> <br/> @llseungjun](https://github.com/llseungjun) |
-| EDA & Feature engineering <br> Boosting모델 베이스라인 구축 <br> T-Fixup모델 구현 <br> K-Fold 적용 <br> Data Augmentation 적용 | EDA & Feature engineering <br> Lastquery 모델링 <br> Rnn, Gru, Tcn, 등 Sequence 모델링 | EDA & Feature engineering <br> LGBM 베이스라인 구축 및 최적화 <br> lightgcn 모델링 <br> Ensemble 진행 | Base environment 구축 <br> Base pipeline 구축 <br> Sweep 구현 <br> Stacking ensemble 구현 | EDA & Feature engineering <br> Saint <br> Saint + GRU <br> GRUATTN 모델링  |
-
+- 공통 : EDA & Feature engineering
+- 김세훈 : Boosting모델 베이스라인 구축, T-Fixup모델 구현, K-Fold 적용, Data Augmentation 적용
+- 문찬우 : Lastquery 모델링, Rnn, Gru, Tcn, 등 Sequence 모델링
+- 김시윤 : LGBM 베이스라인 구축 및 최적화, lightgcn 모델링, Ensemble 진행
+- 배건우 : Base environment 구축, Base pipeline 구축, Sweep 구현, Stacking ensemble 구현
+- 이승준 : Saint, Saint + GRU, GRUATTN 모델링
 
 # Skill 
 ### Language
