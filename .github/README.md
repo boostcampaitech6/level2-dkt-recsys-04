@@ -5,12 +5,12 @@
 ### [Skill](#Skill-1)
 ### [Project Overview](#Project-Overview-1)
 ### [Project Structure](#Project-Structure-1)
-- [일정](#일정-1)
-- [1. Environment](#1-Environment-1)
-- [2. Data](#2-Data-1)
-- [3. Model](#3-Model-1)
-- [4. Ensemble](#4-Ensemble-1)
-- [5. Performance](#5-Performance-1)
+- [일정](#일정)
+- [1. Environment](#1-Environment)
+- [2. Data](#2-Data)
+- [3. Model](#3-Model)
+- [4. Ensemble](#4-Ensemble)
+- [5. Performance](#5-Performance)
 
 # Team
 | **김세훈** | **문찬우** | **김시윤** | **배건우** | **이승준** |
