@@ -61,7 +61,6 @@
 <구조도 사진>
 ### 일정
 ![image](https://github.com/boostcampaitech6/level2-dkt-recsys-04/assets/83867930/a1075fce-e913-45ff-b73a-2ce7d8ee511a)
-
 ### 1. Environment
   -
 ### 2. Data
