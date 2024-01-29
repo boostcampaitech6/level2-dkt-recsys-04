@@ -5,8 +5,8 @@
 ### [Skill](#Skill-1)
 ### [Project Overview](#Project-Overview-1)
 ### [Project Structure](#Project-Structure-1)
-&nbsp;&nbsp;[Pipeline](#Pipeline-1)<br>
 &nbsp;&nbsp;[Calendar](#Calendar-1)<br>
+&nbsp;&nbsp;[Pipeline](#Pipeline-1)<br>
 &nbsp;&nbsp;[1. Environment](#1-Environment-1)<br>
 &nbsp;&nbsp;[2. Data](#2-Data-1)<br>
 &nbsp;&nbsp;[3. Model](#3-Model-1)<br>
@@ -54,6 +54,12 @@
 ### 본 대회에서는 Iscream 데이터셋을 활용하여 DKT모델을 구축하여 주어진 마지막 문제를 맞출지 틀릴지 예측할 것입니다.  
  
 ![competition](https://github.com/boostcampaitech5/level2_dkt-recsys-09/assets/83867930/3a48942b-ef29-49a0-9fc0-f5dd65bcc78e) 
+
+# Project Structure
+
+### 일정
+![image](https://github.com/boostcampaitech6/level2-dkt-recsys-04/assets/83867930/a1075fce-e913-45ff-b73a-2ce7d8ee511a)
+### Pipeline
 ```bash
 📦 code
     ├─ boosting
@@ -77,11 +83,7 @@
     ├─ .gitignore
     ├─ readme.md
 ```
-# Project Structure
 ![model_seq](https://github.com/boostcampaitech6/level2-dkt-recsys-04/assets/95879995/82b5668c-2b82-4038-8900-0ab418a64bad)
-
-### 일정
-![image](https://github.com/boostcampaitech6/level2-dkt-recsys-04/assets/83867930/a1075fce-e913-45ff-b73a-2ce7d8ee511a)
 ### 1. Environment
   -
 ### 2. Data
