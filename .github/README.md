@@ -5,8 +5,8 @@
 ### [Skill](#Skill-1)
 ### [Project Overview](#Project-Overview-1)
 ### [Project Structure](#Project-Structure-1)
-&nbsp;&nbsp;[Calendar](#Calendar-1)<br>
-&nbsp;&nbsp;[Pipeline](#Pipeline-1)<br>
+&nbsp;&nbsp;[Calendar](#Calendar)<br>
+&nbsp;&nbsp;[Pipeline](#Pipeline)<br>
 &nbsp;&nbsp;[1. Environment](#1-Environment)<br>
 &nbsp;&nbsp;[2. Data](#2-Data)<br>
 &nbsp;&nbsp;[3. Model](#3-Model)<br>
@@ -56,7 +56,7 @@
 
 # Project Structure
 
-### 일정
+### Calendar
 ![image](https://github.com/boostcampaitech6/level2-dkt-recsys-04/assets/83867930/a1075fce-e913-45ff-b73a-2ce7d8ee511a)
 ### Pipeline
 ```bash
