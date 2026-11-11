@@ -1,0 +1,25 @@
+2024-01-16 18:06:42,881 - root - INFO - Building Model ...
+2024-01-16 18:06:42,889 - root - INFO - Start Training ...
+2024-01-16 18:06:43,313 - root - INFO - Start Training: Epoch 1
+Traceback (most recent call last):
+  File "train.py", line 43, in <module>
+    main(args) # main함수 실행 -> 학습!!!!!!!!!!!
+  File "train.py", line 36, in main
+    trainer.run(args=args, train_data=train_data, valid_data=valid_data, model=model)
+  File "/opt/ml/code2/level2-dkt-recsys-04/code/dkt/dkt/trainer.py", line 43, in run
+    train_auc, train_acc, train_loss = train(train_loader=train_loader,
+  File "/opt/ml/code2/level2-dkt-recsys-04/code/dkt/dkt/trainer.py", line 93, in train
+    preds = model(batch) # [건우] '**'를 사용하기 위해 parameter와 argument의 쌍이 같아햐 하는데 lstm에서 paramete는 data하나기 때문에 '**'안씀
+  File "/opt/ml/miniconda3/envs/dkt/lib/python3.8/site-packages/torch/nn/modules/module.py", line 1518, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/opt/ml/miniconda3/envs/dkt/lib/python3.8/site-packages/torch/nn/modules/module.py", line 1527, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/opt/ml/code2/level2-dkt-recsys-04/code/dkt/dkt/model.py", line 241, in forward
+    out = self.ffn(out)
+  File "/opt/ml/miniconda3/envs/dkt/lib/python3.8/site-packages/torch/nn/modules/module.py", line 1518, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/opt/ml/miniconda3/envs/dkt/lib/python3.8/site-packages/torch/nn/modules/module.py", line 1527, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/opt/ml/code2/level2-dkt-recsys-04/code/dkt/dkt/model.py", line 164, in forward
+    return self.layer2(F.relu(self.layer1(ffn_in)))
+NameError: name 'F' is not defined

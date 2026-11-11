@@ -1,0 +1,22 @@
+2024-01-18 08:17:42,169 - root - INFO - Start Training: Epoch 1
+2024-01-18 08:17:42,424 - root - INFO -     Training steps: 0 Loss: 0.6973
+2024-01-18 08:17:44,733 - root - INFO -     Training steps: 50 Loss: 0.6875
+2024-01-18 08:17:46,290 - root - INFO -     Training steps: 100 Loss: 0.6551
+2024-01-18 08:17:49,203 - root - INFO -     Training steps: 150 Loss: 0.6486
+2024-01-18 08:17:50,708 - root - INFO -     Training steps: 200 Loss: 0.5742
+Traceback (most recent call last):
+  File "train.py", line 47, in <module>
+    main(args) # main함수 실행 -> 학습!!!!!!!!!!!
+  File "train.py", line 37, in main
+    trainer.run(args=args, train_data=train_data, model=model)
+  File "/opt/ml/code2/level2-dkt-recsys-04/code/dkt/dkt/trainer.py", line 58, in run
+    train_auc, train_acc, train_loss = train(train_loader=train_loader,
+  File "/opt/ml/code2/level2-dkt-recsys-04/code/dkt/dkt/trainer.py", line 185, in train
+    update_params(loss=loss, model=model, optimizer=optimizer,
+  File "/opt/ml/code2/level2-dkt-recsys-04/code/dkt/dkt/trainer.py", line 299, in update_params
+    loss.backward()
+  File "/opt/ml/miniconda3/envs/dkt/lib/python3.8/site-packages/torch/_tensor.py", line 492, in backward
+    torch.autograd.backward(
+  File "/opt/ml/miniconda3/envs/dkt/lib/python3.8/site-packages/torch/autograd/__init__.py", line 251, in backward
+    Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
+KeyboardInterrupt

@@ -1,0 +1,25 @@
+2024-01-16 18:15:35,118 - root - INFO - Building Model ...
+2024-01-16 18:15:35,125 - root - INFO - Start Training ...
+2024-01-16 18:15:35,552 - root - INFO - Start Training: Epoch 1
+Traceback (most recent call last):
+  File "train.py", line 43, in <module>
+    main(args) # main함수 실행 -> 학습!!!!!!!!!!!
+  File "train.py", line 36, in main
+    trainer.run(args=args, train_data=train_data, valid_data=valid_data, model=model)
+  File "/opt/ml/code2/level2-dkt-recsys-04/code/dkt/dkt/trainer.py", line 43, in run
+    train_auc, train_acc, train_loss = train(train_loader=train_loader,
+  File "/opt/ml/code2/level2-dkt-recsys-04/code/dkt/dkt/trainer.py", line 96, in train
+    loss = compute_loss(preds=preds, targets=targets)
+  File "/opt/ml/code2/level2-dkt-recsys-04/code/dkt/dkt/trainer.py", line 197, in compute_loss
+    loss = get_criterion(pred=preds, target=targets.float())
+  File "/opt/ml/code2/level2-dkt-recsys-04/code/dkt/dkt/criterion.py", line 6, in get_criterion
+    return loss(pred, target)
+  File "/opt/ml/miniconda3/envs/dkt/lib/python3.8/site-packages/torch/nn/modules/module.py", line 1518, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/opt/ml/miniconda3/envs/dkt/lib/python3.8/site-packages/torch/nn/modules/module.py", line 1527, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/opt/ml/miniconda3/envs/dkt/lib/python3.8/site-packages/torch/nn/modules/loss.py", line 725, in forward
+    return F.binary_cross_entropy_with_logits(input, target,
+  File "/opt/ml/miniconda3/envs/dkt/lib/python3.8/site-packages/torch/nn/functional.py", line 3193, in binary_cross_entropy_with_logits
+    raise ValueError(f"Target size ({target.size()}) must be the same as input size ({input.size()})")
+ValueError: Target size (torch.Size([64, 20])) must be the same as input size (torch.Size([64, 20, 1]))

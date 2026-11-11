@@ -1,0 +1,37 @@
+2024-01-18 08:20:56,404 - root - INFO - Start Training: Epoch 1
+2024-01-18 08:20:56,925 - root - INFO -     Training steps: 0 Loss: 0.7106
+2024-01-18 08:20:59,683 - root - INFO -     Training steps: 50 Loss: 0.6655
+2024-01-18 08:21:02,756 - root - INFO -     Training steps: 100 Loss: 0.6322
+2024-01-18 08:21:04,892 - root - INFO -     Training steps: 150 Loss: 0.6444
+2024-01-18 08:21:08,676 - root - INFO -     Training steps: 200 Loss: 0.6318
+2024-01-18 08:21:11,438 - root - INFO -     Training steps: 250 Loss: 0.6331
+2024-01-18 08:21:13,482 - root - INFO -     Training steps: 300 Loss: 0.6037
+2024-01-18 08:21:16,282 - root - INFO -     Training steps: 350 Loss: 0.5590
+2024-01-18 08:21:20,112 - root - INFO -     Training steps: 400 Loss: 0.5622
+2024-01-18 08:21:23,046 - root - INFO -     Training steps: 450 Loss: 0.6470
+2024-01-18 08:21:25,176 - root - INFO -     Training steps: 500 Loss: 0.5101
+2024-01-18 08:21:28,527 - root - INFO -     Training steps: 550 Loss: 0.6527
+2024-01-18 08:21:31,486 - root - INFO -     Training steps: 600 Loss: 0.4810
+2024-01-18 08:21:33,846 - root - INFO -     Training steps: 650 Loss: 0.6000
+Traceback (most recent call last):
+  File "train.py", line 47, in <module>
+    main(args) # main함수 실행 -> 학습!!!!!!!!!!!
+  File "train.py", line 37, in main
+    trainer.run(args=args, train_data=train_data, model=model)
+  File "/opt/ml/code2/level2-dkt-recsys-04/code/dkt/dkt/trainer.py", line 58, in run
+    train_auc, train_acc, train_loss = train(train_loader=train_loader,
+  File "/opt/ml/code2/level2-dkt-recsys-04/code/dkt/dkt/trainer.py", line 181, in train
+    preds = model(batch) # [건우] '**'를 사용하기 위해 parameter와 argument의 쌍이 같아햐 하는데 lstm에서 paramete는 data하나기 때문에 '**'안씀
+  File "/opt/ml/miniconda3/envs/dkt/lib/python3.8/site-packages/torch/nn/modules/module.py", line 1518, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/opt/ml/miniconda3/envs/dkt/lib/python3.8/site-packages/torch/nn/modules/module.py", line 1527, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/opt/ml/code2/level2-dkt-recsys-04/code/dkt/dkt/model.py", line 252, in forward
+    out, hidden = self.lstm(out, hidden)
+  File "/opt/ml/miniconda3/envs/dkt/lib/python3.8/site-packages/torch/nn/modules/module.py", line 1518, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/opt/ml/miniconda3/envs/dkt/lib/python3.8/site-packages/torch/nn/modules/module.py", line 1527, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/opt/ml/miniconda3/envs/dkt/lib/python3.8/site-packages/torch/nn/modules/rnn.py", line 879, in forward
+    result = _VF.lstm(input, hx, self._flat_weights, self.bias, self.num_layers,
+KeyboardInterrupt
